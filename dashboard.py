@@ -1,6 +1,12 @@
 import pandas as pd
 import streamlit as st
 
+
+
+
+
+
+
 add_selectbox = st.sidebar.slider('parametre_1', 0, 100, 25)
 add_selectbox = st.sidebar.slider('parametre_2', 0, 100, 25)
 add_selectbox = st.sidebar.selectbox(
