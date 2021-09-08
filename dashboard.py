@@ -59,9 +59,6 @@ applicant_id = st.sidebar.selectbox(
 row = test_df.loc[applicant_id]
 
 
-st.write(sample_judgement(test_df, model, row))
-
-
 # Separation line
 st.sidebar.markdown('''---''')
 

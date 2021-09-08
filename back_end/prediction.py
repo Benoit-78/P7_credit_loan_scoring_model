@@ -42,17 +42,18 @@ def solvability_score(test_df, model, row):
     # Solution de départ
     temp_df = test_df.copy()
     # Add the new row
-    temp_df.iloc[temp_df.shape[0]-1] = row
-    temp_df['Prediction_probability'] = model.predict_proba(test_df)[:, 1]
+    temp_df = temp_df.append(row)
+    #temp_df['Prediction_probability'] = model.predict_proba(temp_df)[:, 1]
     # Extract and post-process the score    
-    app_predict_proba = temp_df.iloc[temp_df.shape[0]-1]['Prediction_probability']
+    #app_predict_proba = temp_df['Prediction_probability'][-1]
+    app_predict_proba = model.predict_proba(temp_df)[:, 1][-1]
     app_predict_proba = round(app_predict_proba, 2) * 100
     return app_predict_proba
 
 
 def credit_allocation(test_df, model, row):
     '''
-    
+    Provides with the color corresponding to the judgement.
     '''
     score = solvability_score(test_df, model, row)
     if score < 45 and score >= 0:
@@ -60,7 +61,7 @@ def credit_allocation(test_df, model, row):
     elif score < 50:
         note = 'orange'
     elif score <= 100:
-        note='green'
+        note = 'green'
     else:
         return 'Error in score evaluation. See predict.py script.'
     return note
@@ -72,13 +73,13 @@ def sample_judgement(test_df, model, row):
     '''
     # Solution de départ
     temp_df = test_df.copy()
-    temp_df.iloc[temp_df.shape[0]-1] = row
+    temp_df = temp_df.append(row)
 
-    temp_df['Judgement'] = model.predict(test_df)
-    app_judgement = temp_df.iloc[temp_df.shape[0]-1]['Judgement']
-    return temp_df.iloc[temp_df.shape[0]-1]
-    app_judgement = int(app_judgement)
-    return app_judgement
+    #temp_df['Judgement'] = model.predict(temp_df)
+    #app_judgement = temp_df.iloc[temp_df.shape[0]-1]['Judgement']
+    app_predict = model.predict(temp_df)[-1]
+    app_predict = int(app_predict)
+    return app_predict
     
 
 
