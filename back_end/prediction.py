@@ -10,63 +10,24 @@
 
 
 
-#from google.colab import drive
-#drive.mount('/content/drive')
-
-
-
 # --------------------
 # IMPORTS
 # --------------------
 import matplotlib.pyplot as plt
 import numpy as np
-import os
 import pandas as pd
-import pickle
-import xgboost as xgb
 
-from importlib import reload
 from xgboost import plot_importance
 
-#import eda
-#reload(eda)
 
 
 # --------------------
 # CONSTANTS
 # --------------------
-PATH = '/content/drive/My Drive/Colab Notebooks/ocr_data_scientist/P7 Modèle de scoring/'
-os.chdir(PATH)
-MODEL_PATH = 'fitted_xgb.pkl'
 CAT_COLS = ['NAME_TYPE_SUITE', 'NAME_INCOME_TYPE', 'NAME_EDUCATION_TYPE',
             'NAME_FAMILY_STATUS', 'NAME_HOUSING_TYPE', 'OCCUPATION_TYPE', 
-            'WEEKDAY_APPR_PROCESS_START',  'ORGANIZATION_TYPE',
+            'WEEKDAY_APPR_PROCESS_START', 'ORGANIZATION_TYPE',
             'FONDKAPREMONT_MODE', 'HOUSETYPE_MODE', 'WALLSMATERIAL_MODE']
-
-
-# --------------------
-# LOAD
-# --------------------
-# model
-model = pickle.load(open(MODEL_PATH, 'rb'))
-
-# data
-app_train_df = pd.read_csv(PATH + 'data/application_train.csv',
-                           sep=',')
-train_df = pd.read_csv(PATH + 'data/app_train.csv', sep=',') # à mettre en cash dans dashboard.py ?
-test_df = pd.read_csv(PATH + 'data/app_test.csv', sep=',') # à mettre en cash dans dashboard.py ?
-train_df.set_index('SK_ID_CURR', inplace=True)
-test_df.set_index('SK_ID_CURR', inplace=True)*
-
-
-
-# --------------------
-# SETTINGS
-# --------------------
-# Temporary
-test_id = 100005
-# Get the candidate's row # à mettre en cash dans dashboard.py ?
-row = test_df.loc[test_id]
 
 
 
@@ -91,7 +52,7 @@ def solvability_score(test_df, model, row):
 
 def credit_allocation(test_df, model, row):
     '''
-
+    
     '''
     score = solvability_score(test_df, model, row)
     if score < 45 and score >= 0:
@@ -104,6 +65,21 @@ def credit_allocation(test_df, model, row):
         return 'Error in score evaluation. See predict.py script.'
     return note
 
+
+def sample_judgement(test_df, model, row):
+    '''
+    Determine if the applicant is eligible or not.
+    '''
+    # Solution de départ
+    temp_df = test_df.copy()
+    temp_df.iloc[temp_df.shape[0]-1] = row
+
+    temp_df['Judgement'] = model.predict(test_df)
+    app_judgement = temp_df.iloc[temp_df.shape[0]-1]['Judgement']
+    return temp_df.iloc[temp_df.shape[0]-1]
+    app_judgement = int(app_judgement)
+    return app_judgement
+    
 
 
 # --------------------
@@ -131,53 +107,55 @@ def most_important_features_list(X, model, n_feat=6):
     return features
 
 
-def sample_judgement(test_df, model, row):
-    '''
-    Determine if the applicant is eligible or not.
-    '''
-    # Solution de départ
-    temp_df = test_df.copy()
-    temp_df.iloc[temp_df.shape[0]-1] = row
-
-    temp_df['Judgement'] = model.predict(test_df)
-    app_judgement = temp_df.iloc[temp_df.shape[0]-1]['Judgement']
-
-    app_judgement = int(app_judgement)
-    return app_judgement
-
-
 
 # --------------------
 # PLOT THE CANDIDATE'S POSITION
 # --------------------
+def feature_qual(test_df, model, feature_name):
+    '''
+    Determine if the given feature is qualitative or not
+    '''
+    for cat_col in CAT_COLS:
+        if cat_col in feature_name:
+            return cat_col
+    return False
+
+
+def feature_type(test_df, model, feature_name):
+    '''
+    Determine the type of the feature:
+    - Categorical,
+    - Boolean,
+    - or Qualitative
+    '''
+    if not feature_qual(test_df, model, feature_name):
+        return 'Qualitative'
+    elif test_df[feature_name].nunique() == 2:
+        return 'Boolean'
+    else:
+        return 'Quantitative'
+
+
 def plot_customer_position(train_df, test_df, model, row, n_feat=0):
     '''
     Plot the position of the applicant among the population of former
     applicants.
     '''
-    # TEMPORARY: select a feature
-    features = most_important_features_list(test_df, model, n_feat=n_feat+1)
-    feat = features[n_feat]
-    # Determine if the feature is quantitative or qualitative
-    for cat_col in CAT_COLS:
-        if cat_col in feat:
-            original_col = cat_col
-    try:
-        original_col
+    featuretype = feature_type(test_df, model, n_feat)
+    if featuretype == 'Categorical':
         return plot_cust_pos_qual_feat(train_df,
                                         test_df,
                                         model,
                                         feat,
                                         row)
-    except:
-        if train_df[feat].nunique() == 2:
-            return plot_cust_pos_bool_feat(train_df,
+    elif featuretype == 'Boolean':
+        return plot_cust_pos_bool_feat(train_df,
                                             test_df,
                                             model,
                                             feat,
                                             row)
-        else:
-            return plot_cust_pos_quant_feat(train_df,
+    else:
+        return plot_cust_pos_quant_feat(train_df,
                                             test_df,
                                             model,
                                             feat,
