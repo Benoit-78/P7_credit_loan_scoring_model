@@ -22,7 +22,7 @@ PATH = 'C:\\Users\\benoi\\Documents\\20.3 Informatique\\Data Science\\0_process\
 os.chdir(PATH)
 MODEL_PATH = PATH + '\\back_end\\fitted_xgb.pkl'
 
-st.set_page_config(layout="centered")
+st.set_page_config(layout="wide")
 
 # --------------------
 # LOADING
@@ -36,7 +36,7 @@ train_df = load_data(PATH + '/data/app_samp_train.csv')
 test_df = load_data(PATH + '/data/app_samp_test.csv')
 orig_train_df = load_data(PATH + '/data/orig_train_samp.csv')
 orig_test_df = load_data(PATH + '/data/orig_test.csv')
-
+# Set indexes
 train_df.set_index('SK_ID_CURR', inplace=True)
 test_df.set_index('SK_ID_CURR', inplace=True)
 orig_train_df.set_index('SK_ID_CURR', inplace=True)
@@ -67,23 +67,42 @@ st.sidebar.markdown('''---''')
 IMPORTANT_FEATURES = most_important_features_list(test_df, model, n_feat=6)
 st.sidebar.subheader('Settings')
 original_features = []
+widgets = {}
 for i, feature_name in enumerate(IMPORTANT_FEATURES):
-    if feature_qual(test_df, model, feature_name):
-        orig_col = feature_qual(test_df, model, feature_name)
-        st.sidebar.selectbox(
-            orig_col.replace('_', ' ').capitalize(),
-            orig_train_df[orig_col].dropna().unique())
+    st.write(app_spec_option(test_df, feature_name, applicant_id))
+
+for i, feature_name in enumerate(IMPORTANT_FEATURES):
+    if orig_feat(feature_name):
+        orig_col = orig_feat(feature_name)
+        # Parameters
+        label = orig_col.replace('_', ' ').capitalize()
+        options = list(orig_train_df[orig_col].dropna().unique())
+        options.append('Not available')
+        for i, option in enumerate(options):
+            if option in feat_option(test_df, feature_name, applicant_id).replace('_', ' '):
+                index = i
+                st.sidebar.write(i, option)
+        widget_key = st.sidebar.selectbox(
+            label=label,
+            options=options,
+            index=index)
+        # Clean the feature
         orig_col = orig_col.replace('_', ' ').capitalize()
         original_features.append(orig_col)
+        # Save the original feature
+        widget_key = orig_col.upper() + '_' + widget_key
+        widget_key = widget_key.replace(' ', '_')
+        widgets[widget_key] = 1
+        widgets[feature_name] = 0
     elif test_df[feature_name].nunique() == 2:
         if int(test_df[feature_name].loc[applicant_id]) == 1:
             app_value = 1
         else:
             app_value = 0
-        feature_name = feature_name.replace('_', ' ').capitalize()
-        original_features.append(feature_name)
-        st.sidebar.radio(
-            feature_name,
+        new_name = feature_name.replace('_', ' ').capitalize()
+        original_features.append(new_name)
+        widgets[feature_name] = st.sidebar.radio(
+            new_name,
             (0, 1),
             index=app_value)
     else:
@@ -91,13 +110,25 @@ for i, feature_name in enumerate(IMPORTANT_FEATURES):
         min_value = int(min(orig_test_df[feature_name]))
         max_value = int(max(orig_test_df[feature_name]))
         app_value = int(orig_test_df[feature_name].loc[applicant_id])
-        st.sidebar.slider(feature_name.capitalize(), min_value, max_value, app_value)
+        widgets[feature_name] = st.sidebar.slider(feature_name.capitalize(), min_value, max_value, app_value)
+
+
 
 # Separation line
 st.sidebar.markdown('''---''')
 
+
+
 # Ask for prediction
-st.sidebar.button('Update')
+new_row = row.copy()
+for key, value in widgets.items():
+    new_row[key] = value
+    st.write(key, value)
+st.sidebar.write(new_row.equals(row))
+st.write(new_row)
+if new_row.equals(row):
+    if st.sidebar.button('Update'):
+        n_row = row
 
 
 
@@ -109,9 +140,10 @@ col1, col2 = st.columns([1,4])
 with col1:
     st.header("Decision")
     color = credit_allocation(test_df, model, row)
+    # ROG circle
     circle = matplotlib.patches.Circle(
         (0.5, 0.5),
-        radius=0.2,
+        radius=0.1,
         color=color,
         alpha=0.7,
         edgecolor="black",
@@ -127,7 +159,7 @@ with col1:
         judgement = 'Loan granted under conditions'
     elif color == 'green':
         judgement = 'Loan granted'
-    st.write(judgement)
+    st.subheader(judgement)
 
 
 

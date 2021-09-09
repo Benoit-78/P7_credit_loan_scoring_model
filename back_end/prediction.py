@@ -24,10 +24,17 @@ from xgboost import plot_importance
 # --------------------
 # CONSTANTS
 # --------------------
-CAT_COLS = ['NAME_TYPE_SUITE', 'NAME_INCOME_TYPE', 'NAME_EDUCATION_TYPE',
-            'NAME_FAMILY_STATUS', 'NAME_HOUSING_TYPE', 'OCCUPATION_TYPE', 
-            'WEEKDAY_APPR_PROCESS_START', 'ORGANIZATION_TYPE',
-            'FONDKAPREMONT_MODE', 'HOUSETYPE_MODE', 'WALLSMATERIAL_MODE']
+CAT_COLS = ['FONDKAPREMONT_MODE',
+            'HOUSETYPE_MODE',
+            'NAME_EDUCATION_TYPE',
+            'NAME_FAMILY_STATUS',
+            'NAME_HOUSING_TYPE',
+            'NAME_INCOME_TYPE',
+            'NAME_TYPE_SUITE',
+            'OCCUPATION_TYPE', 
+            'ORGANIZATION_TYPE',
+            'WALLSMATERIAL_MODE',
+            'WEEKDAY_APPR_PROCESS_START']
 
 
 
@@ -112,14 +119,64 @@ def most_important_features_list(X, model, n_feat=6):
 # --------------------
 # PLOT THE CANDIDATE'S POSITION
 # --------------------
-def feature_qual(test_df, model, feature_name):
+def readable_string(my_string):
     '''
-    Determine if the given feature is qualitative or not
+    Returns the name of the original qualitative feature without underscores.
+    '''
+    my_string = my_string.replace('_', ' ')
+    my_string.capitalize()
+    return my_string
+
+
+def orig_encoded_feat(feature_name):
+    '''
+    Returns the name of the original qualitative feature.
     '''
     for cat_col in CAT_COLS:
         if cat_col in feature_name:
             return cat_col
     return False
+
+
+def orig_encoded_option(feature_name):
+    '''
+    Returns the name of the original qualitative option.
+    '''
+    for cat_col in CAT_COLS:
+        if cat_col in feature_name:
+            return cat_col
+    
+    return False
+
+
+def encoded_options(encoded_df, feature_name):
+    '''
+    Given an encoded column name, returns the list of the other options
+    for the same original column before encoding.
+    '''
+    orig_col = orig_encoded_feat(feature_name)
+    options_col = []
+    if orig_col:
+        for col in encoded_df.columns:
+            if orig_col in col:
+                options_col.append(col)
+    return options_col
+
+
+def app_spec_option(encoded_df, feature_name, app_id):
+    '''
+    Returns the name of the original qualitative option.
+    '''
+    options_col = encoded_options(encoded_df, feature_name)
+    temp_dict = dict(encoded_df[options_col].loc[app_id])
+    for key in temp_dict.keys():
+        if temp_dict[key] == 1:
+            option = key
+    try:
+        if option:
+            pass
+    except:
+        return 'Not available'
 
 
 def feature_type(test_df, model, feature_name):
@@ -129,7 +186,7 @@ def feature_type(test_df, model, feature_name):
     - Boolean,
     - or Qualitative
     '''
-    if not feature_qual(test_df, model, feature_name):
+    if not orig_feat(feature_name):
         return 'Qualitative'
     elif test_df[feature_name].nunique() == 2:
         return 'Boolean'
