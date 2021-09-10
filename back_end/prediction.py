@@ -128,6 +128,16 @@ def readable_string(my_string):
     return my_string
 
 
+def original_string(orig_col, option):
+    '''
+
+    '''
+    new_string = orig_col.upper() + '_' + option
+    new_string = new_string.replace(' ', '_')
+    return new_string
+
+
+
 def orig_encoded_feat(feature_name):
     '''
     Returns the name of the original qualitative feature.
@@ -174,7 +184,7 @@ def app_spec_option(encoded_df, feature_name, app_id):
             option = key
     try:
         if option:
-            pass
+            return option
     except:
         return 'Not available'
 
@@ -186,7 +196,7 @@ def feature_type(test_df, model, feature_name):
     - Boolean,
     - or Qualitative
     '''
-    if not orig_feat(feature_name):
+    if orig_encoded_feat(feature_name):
         return 'Qualitative'
     elif test_df[feature_name].nunique() == 2:
         return 'Boolean'
@@ -194,30 +204,34 @@ def feature_type(test_df, model, feature_name):
         return 'Quantitative'
 
 
-def plot_customer_position(train_df, test_df, model, row, n_feat=0):
+def plot_customer_position(train_df, test_df, orig_train_df, model, row, feature_name):
     '''
     Plot the position of the applicant among the population of former
     applicants.
     '''
-    featuretype = feature_type(test_df, model, n_feat)
-    if featuretype == 'Categorical':
+    featuretype = feature_type(test_df, model, feature_name)
+    if featuretype == 'Qualitative':
+        #return 'Categorical'
         return plot_cust_pos_qual_feat(train_df,
+                                       test_df,
+                                       orig_train_df,
+                                       model,
+                                       feature_name,
+                                       row)
+    elif featuretype == 'Boolean':
+        #return 'Boolean'
+        return plot_cust_pos_bool_feat(train_df,
+                                       test_df,
+                                       model,
+                                       feature_name,
+                                       row.drop('ID'))
+    else:
+        #return 'Quantitative'
+        return plot_cust_pos_quant_feat(train_df,
                                         test_df,
                                         model,
-                                        feat,
-                                        row)
-    elif featuretype == 'Boolean':
-        return plot_cust_pos_bool_feat(train_df,
-                                            test_df,
-                                            model,
-                                            feat,
-                                            row)
-    else:
-        return plot_cust_pos_quant_feat(train_df,
-                                            test_df,
-                                            model,
-                                            feat,
-                                            row)
+                                        feature_name,
+                                        row.drop('ID'))
 
 
 def plot_cust_pos_bool_feat(train_df, test_df, model, feat, row):
@@ -236,40 +250,42 @@ def plot_cust_pos_bool_feat(train_df, test_df, model, feat, row):
     with_refused = with_df[with_df['TARGET']==0].shape[0]
     # Color the semi-column of the customer choosen
     if value == 0:
-        colors_ax2 = ['green', 'gray']
+        colors_ax2 = ['green', 'red']
         if judgement == 0:
             colors_ax1 = ['green', 'blue']
         else:
-            colors_ax1 = ['blue', 'gray']
+            colors_ax1 = ['blue', 'red']
     else:
-        colors_ax1 = ['green', 'gray']
+        colors_ax1 = ['green', 'red']
         if judgement == 0:
             colors_ax2 = ['green', 'blue']
         else:
-            colors_ax2 = ['blue', 'gray']
+            colors_ax2 = ['blue', 'red']
     # Create a set of two piecharts
     fig, (ax1, ax2) = plt.subplots(1, 2,
                                    subplot_kw=dict(aspect="equal"))
-    userfriendly_feat = feat.replace('_', ' ')
-    fig.suptitle(userfriendly_feat)
-    ax1.set_title('Without')
+    fig.suptitle(readable_string(feat), fontsize=30)
+    ax1.set_title('Without', fontsize=20)
     ax1.pie([without_granted, without_refused],
             labels=['Granted', 'Refused'],
             colors=colors_ax1,
             autopct=lambda x: round(x, 1),
             startangle=90,
+            textprops={'fontsize': 14},
             wedgeprops={'alpha':0.5,
                         "edgecolor":"k",
                         'linewidth': 1})
-    ax2.set_title('With')
+    ax2.set_title('With', fontsize=20)
     ax2.pie([with_granted, with_refused],
             labels=['Granted', 'Refused'],
             colors=colors_ax2,
             autopct=lambda x: round(x, 1),
             startangle=90,
+            textprops={'fontsize': 14},
             wedgeprops={'alpha':0.5,
                         "edgecolor":"k",
                         'linewidth': 1})
+    return fig
     
 
 def plot_cust_pos_quant_feat(train_df, test_df, model, feature, row):
@@ -286,12 +302,13 @@ def plot_cust_pos_quant_feat(train_df, test_df, model, feature, row):
     train_0_feature = list(train_df[train_df['TARGET']==0][feature])
     train_1_feature = list(train_df[train_df['TARGET']==1][feature])
     # Extractions des données numériques
-    n_0, bins_0, patches_0 = plt.hist(train_0_feature,
+    fig, ax = plt.subplots()
+    n_0, bins_0, patches_0 = ax.hist(train_0_feature,
                                       bins=30,
                                       edgecolor='k',
                                       color='gray',
                                       alpha=0.6)
-    n_1, bins_1, patches_1 = plt.hist(train_1_feature,
+    n_1, bins_1, patches_1 = ax.hist(train_1_feature,
                                       bins=30,
                                       edgecolor='k',
                                       color='green',
@@ -299,14 +316,16 @@ def plot_cust_pos_quant_feat(train_df, test_df, model, feature, row):
     # Special coloration for applicant identification
     judgement = sample_judgement(test_df, model, row)
     if judgement == 1: # applicant is accepted
-        plt.title(feature + ', ' + str(app_feature_value) + ' - Granted')
+        ax.set_title(feature + ', ' + str(app_feature_value) + ' - Granted',
+                  font_size=30)
         for i, element in enumerate(patches_1):
             if element.xy[0] > app_feature_value:
                 n_print = i
                 break
         patches_1[i].set_fc('b')
     elif judgement == 0: # applicant is refused
-        plt.title(feature + ', ' + str(app_feature_value) + ' - Refused')
+        plt.title(feature + ', ' + str(app_feature_value) + ' - Refused',
+                  font_size=30)
         for i, element in enumerate(patches_0):
             if element.xy[0] > app_feature_value:
                 n_print = i
@@ -318,7 +337,7 @@ def plot_cust_pos_quant_feat(train_df, test_df, model, feature, row):
     plt.show()
 
 
-def plot_cust_pos_qual_feat(train_df, test_df, model, feature, row):
+def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, model, feature, row):
     '''
     Plot the position of the choosen customer among the population of other
     customers, for a quantitative feature.
@@ -330,10 +349,10 @@ def plot_cust_pos_qual_feat(train_df, test_df, model, feature, row):
     # Get the corresponding value for the customer
     value = row[feature]
     # Get the root feature
-    for col in CAT_COLS:
-        if col in feature:
-            original_col = col
+    original_col = orig_encoded_feat(feature)
     # Get the value taken by the candidate
+    app_category = app_spec_option(test_df, feature, row['ID'])
+
     if value == 0:
         # Get the list of columns coming from the same original_col
         similar_feats = []
@@ -358,11 +377,14 @@ def plot_cust_pos_qual_feat(train_df, test_df, model, feature, row):
                      ' important for the final decision.\n\nAsk the applicant'
                      ' for the corresponding information.'.format(
                          original_col))
+    
+
+
     # Get the categorical distribution for accepted applicants
-    train_1_df = app_train_df[app_train_df['TARGET']==1]
+    train_1_df = orig_train_df[orig_train_df['TARGET']==1]
     train_1_df = pd.DataFrame(train_1_df[original_col].value_counts())
     # Get the categorical distribution for refused applicants
-    train_0_df = app_train_df[app_train_df['TARGET']==0]
+    train_0_df = orig_train_df[orig_train_df['TARGET']==0]
     train_0_df = pd.DataFrame(train_0_df[original_col].value_counts())
     # Merge the two dataframe
     pareto_df = pd.merge(train_1_df,
@@ -375,12 +397,16 @@ def plot_cust_pos_qual_feat(train_df, test_df, model, feature, row):
     # Create a column sum
     pareto_df['Ratio'] = pareto_df[pareto_df.columns[1]] / pareto_df[pareto_df.columns[0]]
     pareto_df.sort_values(by='Ratio', ascending=False, inplace=True)   
+    # Create the figure
+    fig, ax = plt.subplots()
     # Plot parameters
-    plt.title(original_col + ' - Chance of success')
-    plt.xlabel('Categories')
-    plt.xticks(rotation=45,
-               ha='right')
-    plt.ylabel('Percentage of granted credits')
+    ax.set_title(readable_string(original_col), fontsize=30)
+    plt.setp(ax.get_xticklabels(),
+             rotation=45,
+             horizontalalignment='right',
+             fontsize=15)
+    #ax.set_xticks(rotation=45, ha='right')
+    ax.set_ylabel('Chance of success', fontsize=20)
     # Color the semi-column of the customer choosen.
     colors=[]
     for category in pareto_df.index:
@@ -389,10 +415,10 @@ def plot_cust_pos_qual_feat(train_df, test_df, model, feature, row):
         else:
             colors.append('gray')
     # Plot the bar graph
-    plt.bar(pareto_df.index,
+    ax.bar(pareto_df.index,
             pareto_df['Ratio'],
             alpha=0.5,
             color=colors,
             edgecolor='k')
     # Other parameters
-    plt.show()
+    return fig
