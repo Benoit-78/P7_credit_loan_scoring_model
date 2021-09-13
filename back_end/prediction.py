@@ -16,6 +16,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
 
 from xgboost import plot_importance
 
@@ -24,12 +25,21 @@ from xgboost import plot_importance
 # --------------------
 # CONSTANTS
 # --------------------
-CAT_COLS = ['FONDKAPREMONT_MODE',
+CAT_COLS = ['CHANNEL_TYPE',
+            'CODE_REJECT_REASON',
+            'CREDIT_ACTIVE',
+            'CREDIT_TYPE',
+            'FONDKAPREMONT_MODE',
             'HOUSETYPE_MODE',
+            'NAME_CASH_LOAN_PURPOSE',
+            'NAME_CONTRACT_STATUS',
+            'NAME_CONTRACT_TYPE',
             'NAME_EDUCATION_TYPE',
             'NAME_FAMILY_STATUS',
+            'NAME_GOODS_CATEGORY',
             'NAME_HOUSING_TYPE',
             'NAME_INCOME_TYPE',
+            'NAME_PAYMENT_TYPE',
             'NAME_TYPE_SUITE',
             'OCCUPATION_TYPE', 
             'ORGANIZATION_TYPE',
@@ -215,7 +225,6 @@ def plot_customer_position(train_df, test_df, orig_train_df, model, row, feature
         return plot_cust_pos_qual_feat(train_df,
                                        test_df,
                                        orig_train_df,
-                                       model,
                                        feature_name,
                                        row)
     elif featuretype == 'Boolean':
@@ -229,7 +238,6 @@ def plot_customer_position(train_df, test_df, orig_train_df, model, row, feature
         #return 'Quantitative'
         return plot_cust_pos_quant_feat(train_df,
                                         test_df,
-                                        model,
                                         feature_name,
                                         row.drop('ID'))
 
@@ -245,50 +253,25 @@ def plot_cust_pos_bool_feat(train_df, test_df, model, feat, row):
     without_df = train_df[train_df[feat]==0]
     with_df = train_df[train_df[feat]==1]
     without_granted = without_df[without_df['TARGET']==1].shape[0]
-    without_refused = without_df[without_df['TARGET']==0].shape[0]
     with_granted = with_df[with_df['TARGET']==1].shape[0]
-    with_refused = with_df[with_df['TARGET']==0].shape[0]
-    # Color the semi-column of the customer choosen
     if value == 0:
-        colors_ax2 = ['green', 'red']
-        if judgement == 0:
-            colors_ax1 = ['green', 'blue']
-        else:
-            colors_ax1 = ['blue', 'red']
+        colors = ['blue', 'gray']
     else:
-        colors_ax1 = ['green', 'red']
-        if judgement == 0:
-            colors_ax2 = ['green', 'blue']
-        else:
-            colors_ax2 = ['blue', 'red']
-    # Create a set of two piecharts
-    fig, (ax1, ax2) = plt.subplots(1, 2,
-                                   subplot_kw=dict(aspect="equal"))
-    fig.suptitle(readable_string(feat), fontsize=30)
-    ax1.set_title('Without', fontsize=20)
-    ax1.pie([without_granted, without_refused],
-            labels=['Granted', 'Refused'],
-            colors=colors_ax1,
-            autopct=lambda x: round(x, 1),
-            startangle=90,
-            textprops={'fontsize': 14},
-            wedgeprops={'alpha':0.5,
-                        "edgecolor":"k",
-                        'linewidth': 1})
-    ax2.set_title('With', fontsize=20)
-    ax2.pie([with_granted, with_refused],
-            labels=['Granted', 'Refused'],
-            colors=colors_ax2,
-            autopct=lambda x: round(x, 1),
-            startangle=90,
-            textprops={'fontsize': 14},
-            wedgeprops={'alpha':0.5,
-                        "edgecolor":"k",
-                        'linewidth': 1})
+        colors = ['gray', 'blue']
+    fig, ax = plt.subplots()
+    ax.set_title(readable_string(feat), fontsize=30)
+    ax.set_ylabel('Chance of success',
+                  fontsize=20)
+    ax.bar(['Without', 'With'],
+           [without_granted, with_granted],
+           color=colors,
+           alpha=0.5,
+           edgecolor='k',
+           linewidth=1)
     return fig
     
 
-def plot_cust_pos_quant_feat(train_df, test_df, model, feature, row):
+def plot_cust_pos_quant_feat(train_df, test_df, feature, row):
     '''
     Plot the position of the choosen customer among the population of other
     customers, for a quantitative feature.
@@ -296,48 +279,19 @@ def plot_cust_pos_quant_feat(train_df, test_df, model, feature, row):
     # POSITION OF THE APPLICANT
     app_feature_value = row[feature]
     app_feature_value = round(app_feature_value, 3)
-    # Distribution de la caractéristique dans le TRAIN set pour:
-    # - les targets à 0
-    # - les targets à 1
-    train_0_feature = list(train_df[train_df['TARGET']==0][feature])
-    train_1_feature = list(train_df[train_df['TARGET']==1][feature])
-    # Extractions des données numériques
-    fig, ax = plt.subplots()
-    n_0, bins_0, patches_0 = ax.hist(train_0_feature,
-                                      bins=30,
-                                      edgecolor='k',
-                                      color='gray',
-                                      alpha=0.6)
-    n_1, bins_1, patches_1 = ax.hist(train_1_feature,
-                                      bins=30,
-                                      edgecolor='k',
-                                      color='green',
-                                      alpha=0.6)
-    # Special coloration for applicant identification
-    judgement = sample_judgement(test_df, model, row)
-    if judgement == 1: # applicant is accepted
-        ax.set_title(feature + ', ' + str(app_feature_value) + ' - Granted',
-                  font_size=30)
-        for i, element in enumerate(patches_1):
-            if element.xy[0] > app_feature_value:
-                n_print = i
-                break
-        patches_1[i].set_fc('b')
-    elif judgement == 0: # applicant is refused
-        plt.title(feature + ', ' + str(app_feature_value) + ' - Refused',
-                  font_size=30)
-        for i, element in enumerate(patches_0):
-            if element.xy[0] > app_feature_value:
-                n_print = i
-                break
-        patches_0[i].set_fc('b')
-    # Other plotting parameters
-    plt.legend(['Refused',
-                'Granted'])
-    plt.show()
+    # Plot distributions
+    h = sns.displot(train_df,
+                    x=feature,
+                    hue='TARGET',
+                    kind='kde',
+                    bw_adjust=.3,
+                    fill=True)
+    # Plot applicant position
+
+    return h
 
 
-def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, model, feature, row):
+def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, feature, row):
     '''
     Plot the position of the choosen customer among the population of other
     customers, for a quantitative feature.

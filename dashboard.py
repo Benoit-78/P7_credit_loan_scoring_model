@@ -178,8 +178,10 @@ with col2:
             fontsize=8)
     # Text of scale
     ax.text(0-1, 0.5, 0, fontsize=8)
+    ax.text(15-1, 0.5, 'Not reliable', fontsize=8, color='r')
     ax.text(45-3, 0.5, 45, fontsize=8)
     ax.text(50-1, 0.5, 50, fontsize=8)
+    ax.text(68-1, 0.5, 'Reliable', fontsize=8, color='g')
     ax.text(100-2, 0.5, 100, fontsize=8)
     ax.axis('off')
     ax.add_collection(lc)
@@ -217,3 +219,25 @@ with col34:
 with col35:
     #st.write(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[0]))
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[5]))
+
+
+
+# Separation line
+st.markdown('''---''')
+
+
+
+st.header("Specific analysis")
+
+orig_cols = []
+for feature_name in test_df.columns:
+    if orig_encoded_feat(feature_name):
+        orig_cols.append(orig_encoded_feat(feature_name))
+    else:
+        orig_cols.append(feature_name)
+orig_cols = list(dict.fromkeys(orig_cols))
+col40, col41, col42 = st.columns([1, 2, 1])
+with col41:
+    feature = st.selectbox(label='Choose a characteristic',
+                       options=orig_cols)
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, feature))
