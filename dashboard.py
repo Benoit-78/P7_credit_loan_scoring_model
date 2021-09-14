@@ -1,3 +1,5 @@
+# Green status applicant nb. 105966
+
 # --------------------
 # IMPORTS
 # --------------------
@@ -22,13 +24,13 @@ PATH = 'C:\\Users\\benoi\\Documents\\20.3 Informatique\\Data Science\\0_process\
 os.chdir(PATH)
 MODEL_PATH = PATH + '\\back_end\\fitted_xgb.pkl'
 
-st.set_page_config(layout="centered")
+st.set_page_config(layout='wide')
 
 # --------------------
 # LOADING
 # --------------------
 # data
-#@st.cache#(allow_output_mutation=True)
+#@st.cache(allow_output_mutation=True)
 def load_data(path):
     dataframe = pd.read_csv(path)
     return dataframe
@@ -59,34 +61,50 @@ applicant_id = st.sidebar.selectbox(
 orig_row = test_df.loc[applicant_id]
 orig_row['ID'] = applicant_id
 row = orig_row
-# Green status: applicant nb. 105966
+# Reset the settings
+back_to_original_row = st.sidebar.button('Update')
+if back_to_original_row:
+    row = orig_row
 
 
-
-# Separation line
-st.sidebar.markdown('''---''')
-
-
-
+# --------------------
+# SETTINGS
+# --------------------
+widgets = {}
+placeholder = {}
+st.sidebar.subheader("Settings")
 # Get the most important features
 IMPORTANT_FEATURES = most_important_features_list(test_df, model, n_feat=6)
-st.sidebar.subheader('Settings')
-widgets = {}
+# Clean the data
+for feature in IMPORTANT_FEATURES:
+    if orig_encoded_feat(feature):
+        orig_col = orig_encoded_feat(feature)
+        orig_train_df[orig_col].replace('/', ' ', regex=True, inplace=True)
+        for df in [train_df, test_df, orig_test_df]:
+            temp_serie = df[feature]
+            df.drop(feature, axis=1, inplace=True)
+            df[feature.replace('_', ' ')] = temp_serie
 
-#for i, feature_name in enumerate(IMPORTANT_FEATURES):
-#    st.write(app_spec_option(test_df, feature_name, applicant_id).replace('_', ' '))
 
+
+j = -1 # row number
 for i, feature_name in enumerate(IMPORTANT_FEATURES):
+    # Categorical variable
     if orig_encoded_feat(feature_name):
         orig_col = orig_encoded_feat(feature_name)
-        # Parameters
+        # Selectbox parameters
         label = readable_string(orig_col)
         options = list(orig_train_df[orig_col].dropna().unique())
         options.append('Not available')
-        options = [option.replace('/', '_') for option in options]
-        for i, option in enumerate(options):
-            if option.replace(' ', '_') in app_spec_option(test_df, feature_name, applicant_id):
-                index = i
+        # Update the widget if necessary
+        if back_to_original_row:
+            index = int(orig_row[feature_name])
+        else:
+            for l, option in enumerate(options):
+                if option.replace(' ', '') in feature_name.replace('_', ''):
+                    index = l
+        # Clean the options
+        options = [option.replace('/', ' ') for option in options]
         widget_key = st.sidebar.selectbox(
             label=label,
             options=options,
@@ -96,128 +114,162 @@ for i, feature_name in enumerate(IMPORTANT_FEATURES):
             widget_key = original_string(orig_col, widget_key)
             widgets[feature_name] = 0
             widgets[widget_key] = 1
+    # Boolean variable
     elif test_df[feature_name].nunique() == 2:
-        if int(test_df[feature_name].loc[applicant_id]) == 1:
-            app_value = 1
+        if back_to_original_row:
+            app_value = orig_row[feature_name]
         else:
-            app_value = 0
+            if int(test_df[feature_name].loc[applicant_id]) == 1:
+                app_value = 1
+            else:
+                app_value = 0
         new_name = feature_name.replace('_', ' ').capitalize()
+        
         widgets[feature_name] = st.sidebar.radio(
             new_name,
             (0, 1),
             index=app_value)
+    # Quantitative variable
     else:
         min_value = int(min(orig_test_df[feature_name]))
         max_value = int(max(orig_test_df[feature_name]))
-        app_value = int(orig_test_df[feature_name].loc[applicant_id])
-        widgets[feature_name] = st.sidebar.slider(feature_name.capitalize(), min_value, max_value, app_value)
+        app_value = int(orig_test_df[feature_name_2].loc[applicant_id])
+        with placeholder[i].container():
+            widgets[feature_name] = st.sidebar.slider(feature_name.capitalize(), min_value, max_value, app_value)
+    
 
-
-
-# Ask for prediction
-new_row = row.copy()
-for key, value in widgets.items():
-    new_row[key] = value
-#st.write(new_row)
-if not new_row.equals(orig_row):
-    row = new_row
-
+if back_to_original_row:
+    for key, value in widgets.items():
+        widgets[key] = orig_row[key]
 
 
 # --------------------
 # OUTPUTS
 # --------------------
 # Credit status
-col1, col2 = st.columns([1,4])
+class decision_indicator():
+    '''
+    Circle whose color can be red, orange or green according the decision taken.
+    '''
+    def __init__(self, test_df, model):
+        self.df = orig_test_df
+        self.model = model
+
+
+    def display_circle(self, t_row):
+        '''
+        
+        '''
+        st.header("Decision")
+        color = credit_allocation(self.df, self.model, t_row)
+        # Colored circle
+        circle = matplotlib.patches.Circle(
+            (0.5, 0.5),
+            radius=0.2,
+            color=color,
+            alpha=0.6,
+            edgecolor="black",
+            linewidth=1)
+        fig, ax = plt.subplots(figsize=(5, 5))
+        ax.add_patch(circle)
+        ax.axis('off')
+        return fig
+
+
+
+class liability_scale():
+    '''
+    Object that displays the probability that the applicant to be reliable.
+    '''
+    def __init__(self, test_df, model):
+        self.df = test_df
+        self.model = model
+
+
+    def display_scale(self, t_row):
+        '''
+        Displays the scale.
+        '''
+        st.header("Score")
+        lines = [[(0, 0), (40, 0)],
+                 [(40, 0), (50, 0)],
+                 [(50, 0), (100, 0)]]
+        colors = np.array(['red', 'orange', 'green'])
+        lc = mc.LineCollection(
+            lines,
+            colors=colors,
+            linewidths=10,
+            alpha=0.6)
+        fig, ax = plt.subplots(figsize=(5, 1))
+        # Applicant-specific arrow
+        app_score = solvability_score(self.df, self.model, t_row)
+        ax.arrow(app_score, -2,
+                 0, 1,
+                 head_width=2, head_length=0.5,
+                 fc='k', ec='k')
+        # Text with applicant score
+        ax.text(app_score-2, -2.5,
+                int(app_score),
+                fontsize=8)
+        # Text of scale
+        ax.text(0-1, 0.5, 0, fontsize=8)
+        ax.text(10-1, 0.5, 'Not reliable', fontsize=8, color='r')
+        ax.text(40-3, 0.5, 40, fontsize=8)
+        ax.text(50-1, 0.5, 50, fontsize=8)
+        ax.text(68-1, 0.5, 'Reliable', fontsize=8, color='g')
+        ax.text(100-2, 0.5, 100, fontsize=8)
+        # Other settings
+        ax.axis('off')
+        # Plot
+        ax.add_collection(lc)
+        ax.autoscale()
+        ax.margins(0.1)
+        return fig
+
+
+
+col1, col2 = st.columns([1, 4])
+# First version of indicator and probability of reliability.
 with col1:
-    st.header("Decision")
-    color = credit_allocation(test_df, model, row.drop('ID'))
-    # ROG circle
-    circle = matplotlib.patches.Circle(
-        (0.5, 0.5),
-        radius=0.2,
-        color=color,
-        alpha=0.7,
-        edgecolor="black",
-        linewidth=1)
-    fig, ax = plt.subplots(figsize=(5, 5))
-    ax.add_patch(circle)
-    ax.axis('off')
-    st.pyplot(fig)
-    # Text
-    if color == 'red':
-        judgement = 'Loan not granted'
-    elif color == 'orange':
-        judgement = 'Loan granted under conditions'
-    elif color == 'green':
-        judgement = 'Loan granted'
-    st.subheader(judgement)
-
+    # placeholder_1 = st.empty()
+    # with placeholder_1.container():
+    st.write(len(row.drop('ID')))
+    indic = decision_indicator(test_df, model)
+    st.pyplot(indic.display_circle(row.drop('ID')))
 with col2:
-    # Liability scale
-    st.header("Score")
-    lines = [[(0, 0), (45, 0)],
-             [(45, 0), (50, 0)],
-             [(50, 0), (100, 0)]]
-    colors = np.array(['red', 'orange', 'green'])
-    lc = mc.LineCollection(
-        lines,
-        colors=colors,
-        linewidths=10,
-        alpha=0.7)
-    fig, ax = plt.subplots(figsize=(5, 1))
-    # Applicant-specific arrow
-    app_score = solvability_score(test_df, model, row.drop('ID'))
-    ax.arrow(app_score, -2,
-             0, 1,
-             head_width=2, head_length=0.5,
-             fc='k', ec='k')
-    # Text with applicant score
-    ax.text(app_score-2, -2.5,
-            int(app_score),
-            fontsize=8)
-    # Text of scale
-    ax.text(0-1, 0.5, 0, fontsize=8)
-    ax.text(15-1, 0.5, 'Not reliable', fontsize=8, color='r')
-    ax.text(45-3, 0.5, 45, fontsize=8)
-    ax.text(50-1, 0.5, 50, fontsize=8)
-    ax.text(68-1, 0.5, 'Reliable', fontsize=8, color='g')
-    ax.text(100-2, 0.5, 100, fontsize=8)
-    ax.axis('off')
-    ax.add_collection(lc)
-    ax.autoscale()
-    ax.margins(0.1)
-    st.write(fig)
+    # placeholder_2 = st.empty()
+    # with placeholder_2.container():
+    scale = liability_scale(test_df, model)
+    st.pyplot(scale.display_scale(row.drop('ID')))
 
 
 
-st.markdown('''---''')
+# Identify if the row is original or have been changed
+new_row = row.copy()
+for key, value in widgets.items():
+    new_row[key] = value
+if not new_row.equals(orig_row):
+    row = new_row
+
 
 
 # --------------------
 # APPLICANT POSITION
 # --------------------
-st.header("Applicant position")
 col30, col31, col32 = st.columns(3)
 with col30:
-    #st.write(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[0]))
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[0]))
 with col31:
-    #st.write(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[0]))
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[1]))
 with col32:
-    #st.write(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[0]))
+    st.write(row.shape, test_df.shape)
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[2]))
-
 col33, col34, col35 = st.columns(3)
 with col33:
-    #st.write(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[0]))
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[3]))
 with col34:
-    #st.write(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[0]))
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[4]))
 with col35:
-    #st.write(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[0]))
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[5]))
 
 
@@ -227,8 +279,10 @@ st.markdown('''---''')
 
 
 
-st.header("Specific analysis")
-
+# --------------------
+# OTHER CHARACTERISTICS
+# --------------------
+st.header("Other characteristics")
 orig_cols = []
 for feature_name in test_df.columns:
     if orig_encoded_feat(feature_name):
@@ -236,8 +290,20 @@ for feature_name in test_df.columns:
     else:
         orig_cols.append(feature_name)
 orig_cols = list(dict.fromkeys(orig_cols))
+
+non_modificable_cols = ['CNT_FAM_MEMBERS',
+                        'EXT_SOURCE_1',
+                        'EXT_SOURCE_2',
+                        'EXT_SOURCE_3',
+                        'WEEKDAY_APPR_PROCESS_START',
+                        'HOUR_APPR_PROCESS_START',
+                        'log_HOUR_APPR_PROCESS_START_prev']
+
+for element in non_modificable_cols:
+    orig_cols.remove(element)
+
 col40, col41, col42 = st.columns([1, 2, 1])
 with col41:
-    feature = st.selectbox(label='Choose a characteristic',
-                       options=orig_cols)
+    feature = st.selectbox(label='',
+                           options=orig_cols)
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, feature))

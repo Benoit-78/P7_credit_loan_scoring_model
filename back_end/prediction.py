@@ -47,7 +47,6 @@ CAT_COLS = ['CHANNEL_TYPE',
             'WEEKDAY_APPR_PROCESS_START']
 
 
-
 # --------------------
 # GENERAL EVALUATION
 # --------------------
@@ -60,9 +59,7 @@ def solvability_score(test_df, model, row):
     temp_df = test_df.copy()
     # Add the new row
     temp_df = temp_df.append(row)
-    #temp_df['Prediction_probability'] = model.predict_proba(temp_df)[:, 1]
     # Extract and post-process the score    
-    #app_predict_proba = temp_df['Prediction_probability'][-1]
     app_predict_proba = model.predict_proba(temp_df)[:, 1][-1]
     app_predict_proba = round(app_predict_proba, 2) * 100
     return app_predict_proba
@@ -73,7 +70,7 @@ def credit_allocation(test_df, model, row):
     Provides with the color corresponding to the judgement.
     '''
     score = solvability_score(test_df, model, row)
-    if score < 45 and score >= 0:
+    if score < 40 and score >= 0:
         note = 'red'
     elif score < 50:
         note = 'orange'
@@ -88,17 +85,12 @@ def sample_judgement(test_df, model, row):
     '''
     Determine if the applicant is eligible or not.
     '''
-    # Solution de départ
     temp_df = test_df.copy()
     temp_df = temp_df.append(row)
-
-    #temp_df['Judgement'] = model.predict(temp_df)
-    #app_judgement = temp_df.iloc[temp_df.shape[0]-1]['Judgement']
     app_predict = model.predict(temp_df)[-1]
     app_predict = int(app_predict)
     return app_predict
     
-
 
 # --------------------
 # STRENGTHS & WEAKNESSES
@@ -125,7 +117,6 @@ def most_important_features_list(X, model, n_feat=6):
     return features
 
 
-
 # --------------------
 # PLOT THE CANDIDATE'S POSITION
 # --------------------
@@ -145,7 +136,6 @@ def original_string(orig_col, option):
     new_string = orig_col.upper() + '_' + option
     new_string = new_string.replace(' ', '_')
     return new_string
-
 
 
 def orig_encoded_feat(feature_name):
@@ -225,6 +215,7 @@ def plot_customer_position(train_df, test_df, orig_train_df, model, row, feature
         return plot_cust_pos_qual_feat(train_df,
                                        test_df,
                                        orig_train_df,
+                                       model,
                                        feature_name,
                                        row)
     elif featuretype == 'Boolean':
@@ -255,18 +246,18 @@ def plot_cust_pos_bool_feat(train_df, test_df, model, feat, row):
     without_granted = without_df[without_df['TARGET']==1].shape[0]
     with_granted = with_df[with_df['TARGET']==1].shape[0]
     if value == 0:
-        colors = ['blue', 'gray']
+        colors = ['blue', 'lightgrey']
     else:
-        colors = ['gray', 'blue']
+        colors = ['lightgrey', 'blue']
     fig, ax = plt.subplots()
-    ax.set_title(readable_string(feat), fontsize=30)
     ax.set_ylabel('Chance of success',
                   fontsize=20)
+    ax.set_title(feat, fontsize=30)
     ax.bar(['Without', 'With'],
            [without_granted, with_granted],
            color=colors,
-           alpha=0.5,
            edgecolor='k',
+           alpha=0.5,
            linewidth=1)
     return fig
     
@@ -291,12 +282,12 @@ def plot_cust_pos_quant_feat(train_df, test_df, feature, row):
     return h
 
 
-def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, feature, row):
+def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, model, feature, row):
     '''
     Plot the position of the choosen customer among the population of other
     customers, for a quantitative feature.
     
-    Warning: it is not very accurate to use app_train_df, as it corresponds
+    Warning: it is not very accurate to use orig_train_df, as it corresponds
     to the very original dataframe, without the feature engineering
     (nan values, outliers, ...).
     '''
@@ -306,21 +297,15 @@ def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, feature, row):
     original_col = orig_encoded_feat(feature)
     # Get the value taken by the candidate
     app_category = app_spec_option(test_df, feature, row['ID'])
-
     if value == 0:
-        # Get the list of columns coming from the same original_col
-        similar_feats = []
-        for col in test_df.columns:
-            if original_col in col:
-                similar_feats.append(col)
-        # Among these columns, find the one that contains 1
-        for col in similar_feats:
+        # Among columns coming from the same original_col,
+        # find the one that contains 1
+        for col in encoded_options(test_df, feature):
             if row[col] == 1:
                 app_category = col
                 app_category = app_category.split(original_col)[-1]
     else:
         app_category = feature.split(original_col)[-1]
-    
     #
     try:
         app_category = app_category[1:].replace('_', ' ')
@@ -331,9 +316,6 @@ def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, feature, row):
                      ' important for the final decision.\n\nAsk the applicant'
                      ' for the corresponding information.'.format(
                          original_col))
-    
-
-
     # Get the categorical distribution for accepted applicants
     train_1_df = orig_train_df[orig_train_df['TARGET']==1]
     train_1_df = pd.DataFrame(train_1_df[original_col].value_counts())
@@ -350,16 +332,17 @@ def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, feature, row):
     pareto_df.replace(np.nan, 0, inplace=True)
     # Create a column sum
     pareto_df['Ratio'] = pareto_df[pareto_df.columns[1]] / pareto_df[pareto_df.columns[0]]
-    pareto_df.sort_values(by='Ratio', ascending=False, inplace=True)   
+    pareto_df.sort_values(by='Ratio', ascending=False, inplace=True)
+    # Clean the data
+    clean_index = [index.replace('/', '_') for index in pareto_df.index]
+    pareto_df.reset_index(drop=True, inplace=True)
+    pareto_df['new_index'] = clean_index
+    pareto_df.set_index('new_index', inplace=True)
     # Create the figure
     fig, ax = plt.subplots()
     # Plot parameters
-    ax.set_title(readable_string(original_col), fontsize=30)
-    plt.setp(ax.get_xticklabels(),
-             rotation=45,
-             horizontalalignment='right',
+    plt.setp(ax.get_xticklabels(), rotation=45, horizontalalignment='right',
              fontsize=15)
-    #ax.set_xticks(rotation=45, ha='right')
     ax.set_ylabel('Chance of success', fontsize=20)
     # Color the semi-column of the customer choosen.
     colors=[]
@@ -367,12 +350,13 @@ def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, feature, row):
         if category == app_category:
             colors.append('blue')
         else:
-            colors.append('gray')
+            colors.append('lightgrey')
     # Plot the bar graph
+    ax.set_title(original_col, fontsize=30)
     ax.bar(pareto_df.index,
             pareto_df['Ratio'],
-            alpha=0.5,
             color=colors,
+            alpha=0.5,
             edgecolor='k')
     # Other parameters
     return fig
