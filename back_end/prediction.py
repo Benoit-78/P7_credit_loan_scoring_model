@@ -204,7 +204,7 @@ def sample_judgement(test_df, model, row):
 # --------------------
 # STRENGTHS & WEAKNESSES
 # --------------------
-def most_important_features_table(model, X, n_feat=6):
+def most_important_features_table(X, model, n_feat=6):
     '''
     Display the n_feat most important feature.
     '''
@@ -221,7 +221,7 @@ def most_important_features_list(X, model, n_feat=6):
     important features.
     The model must be already trained on a train set.
     '''
-    features = most_important_features_table(model, X, n_feat)
+    features = most_important_features_table(X, model, n_feat)
     features = list(features.index)
     return features
 

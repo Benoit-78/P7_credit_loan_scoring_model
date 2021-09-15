@@ -27,7 +27,7 @@ MODEL_PATH = PATH + '\\back_end\\fitted_xgb.pkl'
 st.set_page_config(layout='centered')
 
 # --------------------
-# LOADING
+# LOAD DATA AND MODEL
 # --------------------
 #@st.cache(allow_output_mutation=True)
 def load_data(path, model_path):
@@ -42,7 +42,7 @@ def load_data(path, model_path):
     test_df.set_index('SK_ID_CURR', inplace=True)
     # Sample of unprocessed train set, to get the distributions
     orig_train_df = pd.read_csv(PATH + '/data/orig_train_samp.csv')
-    orig_train_df.set_index('SK_ID_CURR', inplace=True)    
+    orig_train_df.set_index('SK ID CURR', inplace=True)    
     for feature in orig_train_df.columns:
         orig_train_df[feature].replace('/', ' ', regex=True, inplace=True)
     # model
@@ -54,8 +54,7 @@ def load_data(path, model_path):
 train_df, test_df, orig_train_df, model = load_data(PATH, MODEL_PATH)
 
 
-for col in orig_train_df.columns[:10]:
-    st.write(col)
+test_df.columns[100:120]
 
 
 # --------------------
@@ -75,6 +74,7 @@ row = orig_row
 back_to_original_row = st.sidebar.button('Update')
 if back_to_original_row:
     row = orig_row
+
 
 
 # --------------------
@@ -102,10 +102,8 @@ for i, feature_name in enumerate(IMPORTANT_FEATURES):
             index = int(orig_row[feature_name])
         else:
             for l, option in enumerate(options):
-                if option.replace(' ', '') in feature_name.replace('_', ''):
+                if option in feature_name:
                     index = l
-        # Clean the options
-        options = [option.replace('/', ' ').replace('_', ' ') for option in options]
         widget_key = st.sidebar.selectbox(
             label=label,
             options=options,
@@ -125,7 +123,7 @@ for i, feature_name in enumerate(IMPORTANT_FEATURES):
             else:
                 app_value = 0
         new_name = feature_name.replace('_', ' ').capitalize()
-        widgets[feature_name] = st.sidebar.radio(
+        widgets[new_name] = st.sidebar.radio(
             new_name,
             (0, 1),
             index=app_value)
@@ -135,7 +133,6 @@ for i, feature_name in enumerate(IMPORTANT_FEATURES):
         max_value = int(max(test_df[feature_name]))
         app_value = int(test_df[feature_name].loc[applicant_id])
         widgets[feature_name] = st.sidebar.slider(feature_name.capitalize(), min_value, max_value, app_value)
-
 
 
 if back_to_original_row:
@@ -153,7 +150,7 @@ class decision_indicator():
     Circle whose color can be red, orange or green according the decision taken.
     '''
     def __init__(self, test_df, model):
-        self.df = orig_test_df
+        self.df = test_df
         self.model = model
 
 
@@ -253,7 +250,6 @@ if not new_row.equals(orig_row):
 # --------------------
 # APPLICANT POSITION
 # --------------------
-st.write(test_df[IMPORTANT_FEATURES[1].replace('_', ' ')])
 col30, col31, col32 = st.columns(3)
 with col30:
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[0].replace('_', ' ')))
