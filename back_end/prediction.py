@@ -25,26 +25,26 @@ from xgboost import plot_importance
 # --------------------
 # CONSTANTS
 # --------------------
-CAT_COLS = ['CHANNEL_TYPE',
-            'CODE_REJECT_REASON',
+CAT_COLS = ['CHANNEL TYPE',
+            'CODE REJECT REASON',
             #'CREDIT_ACTIVE',
-            'CREDIT_TYPE',
-            'FONDKAPREMONT_MODE',
-            'HOUSETYPE_MODE',
+            'CREDIT TYPE',
+            'FONDKAPREMONT MODE',
+            'HOUSETYPE MODE',
             #'NAME_CASH_LOAN_PURPOSE',
-            'NAME_CONTRACT_STATUS',
-            'NAME_CONTRACT_TYPE',
-            'NAME_EDUCATION_TYPE',
-            'NAME_FAMILY_STATUS',
-            'NAME_GOODS_CATEGORY',
-            'NAME_HOUSING_TYPE',
-            'NAME_INCOME_TYPE',
-            'NAME_PAYMENT_TYPE',
-            'NAME_TYPE_SUITE',
-            'OCCUPATION_TYPE', 
-            'ORGANIZATION_TYPE',
-            'WALLSMATERIAL_MODE',
-            'WEEKDAY_APPR_PROCESS_START']
+            'NAME CONTRACT STATUS',
+            'NAME CONTRACT TYPE',
+            'NAME EDUCATION TYPE',
+            'NAME FAMILY STATUS',
+            'NAME GOODS CATEGORY',
+            'NAME HOUSING TYPE',
+            'NAME INCOME TYPE',
+            'NAME PAYMENT TYPE',
+            'NAME TYPE SUITE',
+            'OCCUPATION TYPE', 
+            'ORGANIZATION TYPE',
+            'WALLSMATERIAL MODE',
+            'WEEKDAY APPR PROCESS START']
 
 
 

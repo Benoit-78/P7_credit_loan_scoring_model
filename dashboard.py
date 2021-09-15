@@ -29,24 +29,34 @@ st.set_page_config(layout='centered')
 # --------------------
 # LOADING
 # --------------------
-# data
 #@st.cache(allow_output_mutation=True)
-def load_data(path):
-    dataframe = pd.read_csv(path)
-    return dataframe
-train_df = load_data(PATH + '/data/app_samp_train.csv')
-test_df = load_data(PATH + '/data/app_samp_test.csv')
-orig_train_df = load_data(PATH + '/data/orig_train_samp.csv')
-orig_test_df = load_data(PATH + '/data/app_test.csv')
-# Set indexes
-train_df.set_index('SK_ID_CURR', inplace=True)
-test_df.set_index('SK_ID_CURR', inplace=True)
-orig_train_df.set_index('SK_ID_CURR', inplace=True)
-orig_test_df.set_index('SK_ID_CURR', inplace=True)
+def load_data(path, model_path):
+    '''
+    Make data and model ready to use.
+    '''
+    # Sample of processed TRAIN set
+    train_df = pd.read_csv(PATH + '/data/app_samp_train.csv')
+    train_df.set_index('SK_ID_CURR', inplace=True)
+    # Sample of processed TEST set
+    test_df = pd.read_csv(PATH + '/data/app_samp_test.csv')
+    test_df.set_index('SK_ID_CURR', inplace=True)
+    # Sample of unprocessed train set, to get the distributions
+    orig_train_df = pd.read_csv(PATH + '/data/orig_train_samp.csv')
+    orig_train_df.set_index('SK_ID_CURR', inplace=True)    
+    for feature in orig_train_df.columns:
+        orig_train_df[feature].replace('/', ' ', regex=True, inplace=True)
+    # model
+    model = xgb.XGBClassifier()
+    model.load_model(MODEL_PATH)
+    # Return 
+    return train_df, test_df, orig_train_df, model
 
-# model
-model = xgb.XGBClassifier()
-model.load_model(MODEL_PATH)
+train_df, test_df, orig_train_df, model = load_data(PATH, MODEL_PATH)
+
+
+for col in orig_train_df.columns[:10]:
+    st.write(col)
+
 
 # --------------------
 # INPUTS
@@ -73,16 +83,6 @@ if back_to_original_row:
 widgets = {}
 placeholder = {}
 st.sidebar.subheader("Settings")
-# Clean the data
-for feature in orig_train_df.columns:
-    orig_train_df[feature].replace('/', ' ', regex=True, inplace=True)
-for feature in test_df.columns:
-    for df in [train_df, test_df, orig_test_df]:
-        temp_serie = df[feature]
-        df.drop(feature, axis=1, inplace=True)
-        df[feature.replace('_', ' ')] = temp_serie
-
-
 # Get the most important features
 IMPORTANT_FEATURES = most_important_features_list(test_df, model, n_feat=6)
 
@@ -131,9 +131,9 @@ for i, feature_name in enumerate(IMPORTANT_FEATURES):
             index=app_value)
     # Quantitative variable
     else:
-        min_value = int(min(orig_test_df[feature_name]))
-        max_value = int(max(orig_test_df[feature_name]))
-        app_value = int(orig_test_df[feature_name].loc[applicant_id])
+        min_value = int(min(test_df[feature_name]))
+        max_value = int(max(test_df[feature_name]))
+        app_value = int(test_df[feature_name].loc[applicant_id])
         widgets[feature_name] = st.sidebar.slider(feature_name.capitalize(), min_value, max_value, app_value)
 
 
