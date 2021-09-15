@@ -24,7 +24,7 @@ PATH = 'C:\\Users\\benoi\\Documents\\20.3 Informatique\\Data Science\\0_process\
 os.chdir(PATH)
 MODEL_PATH = PATH + '\\back_end\\fitted_xgb.pkl'
 
-st.set_page_config(layout='wide')
+st.set_page_config(layout='centered')
 
 # --------------------
 # LOADING
@@ -48,8 +48,6 @@ orig_test_df.set_index('SK_ID_CURR', inplace=True)
 model = xgb.XGBClassifier()
 model.load_model(MODEL_PATH)
 
-
-
 # --------------------
 # INPUTS
 # --------------------
@@ -60,6 +58,8 @@ applicant_id = st.sidebar.selectbox(
     test_df.index)
 orig_row = test_df.loc[applicant_id]
 orig_row['ID'] = applicant_id
+# Cleaning the orig_row from parasite characters
+orig_row.rename(lambda x: x.replace('_', ' '), axis='index', inplace=True)
 row = orig_row
 # Reset the settings
 back_to_original_row = st.sidebar.button('Update')
@@ -73,17 +73,18 @@ if back_to_original_row:
 widgets = {}
 placeholder = {}
 st.sidebar.subheader("Settings")
+# Clean the data
+for feature in orig_train_df.columns:
+    orig_train_df[feature].replace('/', ' ', regex=True, inplace=True)
+for feature in test_df.columns:
+    for df in [train_df, test_df, orig_test_df]:
+        temp_serie = df[feature]
+        df.drop(feature, axis=1, inplace=True)
+        df[feature.replace('_', ' ')] = temp_serie
+
+
 # Get the most important features
 IMPORTANT_FEATURES = most_important_features_list(test_df, model, n_feat=6)
-# Clean the data
-for feature in IMPORTANT_FEATURES:
-    if orig_encoded_feat(feature):
-        orig_col = orig_encoded_feat(feature)
-        orig_train_df[orig_col].replace('/', ' ', regex=True, inplace=True)
-        for df in [train_df, test_df, orig_test_df]:
-            temp_serie = df[feature]
-            df.drop(feature, axis=1, inplace=True)
-            df[feature.replace('_', ' ')] = temp_serie
 
 
 
@@ -104,7 +105,7 @@ for i, feature_name in enumerate(IMPORTANT_FEATURES):
                 if option.replace(' ', '') in feature_name.replace('_', ''):
                     index = l
         # Clean the options
-        options = [option.replace('/', ' ') for option in options]
+        options = [option.replace('/', ' ').replace('_', ' ') for option in options]
         widget_key = st.sidebar.selectbox(
             label=label,
             options=options,
@@ -124,7 +125,6 @@ for i, feature_name in enumerate(IMPORTANT_FEATURES):
             else:
                 app_value = 0
         new_name = feature_name.replace('_', ' ').capitalize()
-        
         widgets[feature_name] = st.sidebar.radio(
             new_name,
             (0, 1),
@@ -133,14 +133,15 @@ for i, feature_name in enumerate(IMPORTANT_FEATURES):
     else:
         min_value = int(min(orig_test_df[feature_name]))
         max_value = int(max(orig_test_df[feature_name]))
-        app_value = int(orig_test_df[feature_name_2].loc[applicant_id])
-        with placeholder[i].container():
-            widgets[feature_name] = st.sidebar.slider(feature_name.capitalize(), min_value, max_value, app_value)
-    
+        app_value = int(orig_test_df[feature_name].loc[applicant_id])
+        widgets[feature_name] = st.sidebar.slider(feature_name.capitalize(), min_value, max_value, app_value)
+
+
 
 if back_to_original_row:
     for key, value in widgets.items():
         widgets[key] = orig_row[key]
+
 
 
 # --------------------
@@ -231,14 +232,9 @@ class liability_scale():
 col1, col2 = st.columns([1, 4])
 # First version of indicator and probability of reliability.
 with col1:
-    # placeholder_1 = st.empty()
-    # with placeholder_1.container():
-    st.write(len(row.drop('ID')))
     indic = decision_indicator(test_df, model)
     st.pyplot(indic.display_circle(row.drop('ID')))
 with col2:
-    # placeholder_2 = st.empty()
-    # with placeholder_2.container():
     scale = liability_scale(test_df, model)
     st.pyplot(scale.display_scale(row.drop('ID')))
 
@@ -247,7 +243,8 @@ with col2:
 # Identify if the row is original or have been changed
 new_row = row.copy()
 for key, value in widgets.items():
-    new_row[key] = value
+    clean_key = key.replace('_', ' ')
+    new_row[clean_key] = value
 if not new_row.equals(orig_row):
     row = new_row
 
@@ -256,21 +253,21 @@ if not new_row.equals(orig_row):
 # --------------------
 # APPLICANT POSITION
 # --------------------
+st.write(test_df[IMPORTANT_FEATURES[1].replace('_', ' ')])
 col30, col31, col32 = st.columns(3)
 with col30:
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[0]))
-with col31:
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[1]))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[0].replace('_', ' ')))
+with col31:    
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[1].replace('_', ' ')))
 with col32:
-    st.write(row.shape, test_df.shape)
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[2]))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[2].replace('_', ' ')))
 col33, col34, col35 = st.columns(3)
 with col33:
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[3]))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[3].replace('_', ' ')))
 with col34:
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[4]))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[4].replace('_', ' ')))
 with col35:
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[5]))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, IMPORTANT_FEATURES[5].replace('_', ' ')))
 
 
 

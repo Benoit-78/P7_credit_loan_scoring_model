@@ -27,11 +27,11 @@ from xgboost import plot_importance
 # --------------------
 CAT_COLS = ['CHANNEL_TYPE',
             'CODE_REJECT_REASON',
-            'CREDIT_ACTIVE',
+            #'CREDIT_ACTIVE',
             'CREDIT_TYPE',
             'FONDKAPREMONT_MODE',
             'HOUSETYPE_MODE',
-            'NAME_CASH_LOAN_PURPOSE',
+            #'NAME_CASH_LOAN_PURPOSE',
             'NAME_CONTRACT_STATUS',
             'NAME_CONTRACT_TYPE',
             'NAME_EDUCATION_TYPE',
@@ -47,78 +47,9 @@ CAT_COLS = ['CHANNEL_TYPE',
             'WEEKDAY_APPR_PROCESS_START']
 
 
-# --------------------
-# GENERAL EVALUATION
-# --------------------
-def solvability_score(test_df, model, row):
-    '''
-    Return the probability in % for the sample to be attributed the note 1.
-    model must be already fitted to the train set.
-    '''
-    # Solution de départ
-    temp_df = test_df.copy()
-    # Add the new row
-    temp_df = temp_df.append(row)
-    # Extract and post-process the score    
-    app_predict_proba = model.predict_proba(temp_df)[:, 1][-1]
-    app_predict_proba = round(app_predict_proba, 2) * 100
-    return app_predict_proba
-
-
-def credit_allocation(test_df, model, row):
-    '''
-    Provides with the color corresponding to the judgement.
-    '''
-    score = solvability_score(test_df, model, row)
-    if score < 40 and score >= 0:
-        note = 'red'
-    elif score < 50:
-        note = 'orange'
-    elif score <= 100:
-        note = 'green'
-    else:
-        return 'Error in score evaluation. See predict.py script.'
-    return note
-
-
-def sample_judgement(test_df, model, row):
-    '''
-    Determine if the applicant is eligible or not.
-    '''
-    temp_df = test_df.copy()
-    temp_df = temp_df.append(row)
-    app_predict = model.predict(temp_df)[-1]
-    app_predict = int(app_predict)
-    return app_predict
-    
 
 # --------------------
-# STRENGTHS & WEAKNESSES
-# --------------------
-def most_important_features_table(model, X, n_feat=6):
-    '''
-    Display the n_feat most important feature.
-    '''
-    feature_importances = pd.Series(model.feature_importances_,
-                                    index=X.columns)
-    feature_importances = feature_importances.sort_values(ascending=False)
-    feature_importances = feature_importances[:n_feat]
-    return feature_importances
-
-
-def most_important_features_list(X, model, n_feat=6):
-    '''
-    Given a dataframe and a classification model, returns the list of the most
-    important features.
-    The model must be already trained on a train set.
-    '''
-    features = most_important_features_table(model, X, n_feat)
-    features = list(features.index)
-    return features
-
-
-# --------------------
-# PLOT THE CANDIDATE'S POSITION
+# PROCESS AND CLEANING
 # --------------------
 def readable_string(my_string):
     '''
@@ -204,6 +135,101 @@ def feature_type(test_df, model, feature_name):
         return 'Quantitative'
 
 
+def clean_df(df):
+    '''
+
+    '''
+    return df.rename(lambda x: x.replace('_', ' '), axis='columns')
+
+
+def sets_difference(df, row):
+    '''
+
+    '''
+    row_set = set(row.index)
+    df_set = set(df.columns)
+    return df_set.difference(row_set), row_set.difference(df_set)
+
+
+# --------------------
+# GENERAL EVALUATION
+# --------------------
+def solvability_score(test_df, model, row):
+    '''
+    Return the probability in % for the sample to be attributed the note 1.
+    model must be already fitted to the train set.
+    '''
+    temp_df = test_df.copy()
+    # Adapt the columns names, without underscore
+    temp_df = clean_df(temp_df)
+    # Add the new row
+    temp_df = temp_df.append(row)
+    # Extract the score    
+    app_predict_proba = model.predict_proba(temp_df)
+    app_predict_proba = app_predict_proba[:, 1][-1]
+    # Post-process
+    app_predict_proba = round(app_predict_proba, 2) * 100
+    return app_predict_proba
+
+
+def credit_allocation(test_df, model, row):
+    '''
+    Provides with the color corresponding to the judgement.
+    '''
+    score = solvability_score(test_df, model, row)
+    if score < 40 and score >= 0:
+        note = 'red'
+    elif score < 50:
+        note = 'orange'
+    elif score <= 100:
+        note = 'green'
+    else:
+        return 'Error in score evaluation. See predict.py script.'
+    return note
+
+
+def sample_judgement(test_df, model, row):
+    '''
+    Determine if the applicant is eligible or not.
+    '''
+    temp_df = test_df.copy()
+    temp_df = clean_df(temp_df)
+    temp_df = temp_df.append(row)
+    app_predict = model.predict(temp_df)[-1]
+    app_predict = int(app_predict)
+    return app_predict
+    
+
+
+# --------------------
+# STRENGTHS & WEAKNESSES
+# --------------------
+def most_important_features_table(model, X, n_feat=6):
+    '''
+    Display the n_feat most important feature.
+    '''
+    feature_importances = pd.Series(model.feature_importances_,
+                                    index=X.columns)
+    feature_importances = feature_importances.sort_values(ascending=False)
+    feature_importances = feature_importances[:n_feat]
+    return feature_importances
+
+
+def most_important_features_list(X, model, n_feat=6):
+    '''
+    Given a dataframe and a classification model, returns the list of the most
+    important features.
+    The model must be already trained on a train set.
+    '''
+    features = most_important_features_table(model, X, n_feat)
+    features = list(features.index)
+    return features
+
+
+
+# --------------------
+# PLOT THE CANDIDATE'S POSITION
+# --------------------
 def plot_customer_position(train_df, test_df, orig_train_df, model, row, feature_name):
     '''
     Plot the position of the applicant among the population of former
