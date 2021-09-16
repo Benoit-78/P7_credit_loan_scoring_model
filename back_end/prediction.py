@@ -13,12 +13,17 @@
 # --------------------
 # IMPORTS
 # --------------------
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import streamlit as st
+import xgboost as xgb
 
+from matplotlib import collections  as mc
 from xgboost import plot_importance
+from matplotlib import pyplot as plt, patches
 
 
 
@@ -51,6 +56,29 @@ CAT_COLS = ['CHANNEL TYPE',
 # --------------------
 # PROCESS AND CLEANING
 # --------------------
+def load_data(path, model_path):
+    '''
+    Make data and model ready to use.
+    '''
+    # Sample of processed TRAIN set
+    train_df = pd.read_csv(path + '/data/app_samp_train.csv')
+    train_df.set_index('SK_ID_CURR', inplace=True)
+    # Sample of processed TEST set
+    test_df = pd.read_csv(path + '/data/app_samp_test.csv')
+    test_df.set_index('SK_ID_CURR', inplace=True)
+    # Sample of unprocessed train set, to get the distributions
+    orig_train_df = pd.read_csv(path + '/data/orig_train_samp.csv')
+    orig_train_df.set_index('SK ID CURR', inplace=True)    
+    for feature in orig_train_df.columns:
+        orig_train_df[feature].replace('/', ' ', regex=True, inplace=True)
+        orig_train_df[feature].replace('_', ' ', regex=True, inplace=True)
+    # model
+    model = xgb.XGBClassifier()
+    model.load_model(model_path)
+    # Return 
+    return train_df, test_df, orig_train_df, model
+
+
 def readable_string(my_string):
     '''
     Returns the name of the original qualitative feature without underscores.
@@ -64,8 +92,8 @@ def original_string(orig_col, option):
     '''
 
     '''
-    new_string = orig_col.upper() + '_' + option
-    new_string = new_string.replace(' ', '_')
+    new_string = orig_col.upper() + ' ' + option
+    #new_string = new_string.replace(' ', '_')
     return new_string
 
 
@@ -85,8 +113,7 @@ def orig_encoded_option(feature_name):
     '''
     for cat_col in CAT_COLS:
         if cat_col in feature_name:
-            return cat_col
-    
+            return feature_name.split(cat_col)[-1]
     return False
 
 
@@ -151,6 +178,25 @@ def sets_difference(df, row):
     return df_set.difference(row_set), row_set.difference(df_set)
 
 
+def row_from_widgets_dict(widgets_dict, orig_row, encoded_df):
+    '''
+    Make a row out of the widgets results
+    '''
+    new_row = orig_row.copy()
+    for key, value in widgets_dict:
+        # Qualitative values
+        if key in CAT_COLS:
+            option_cols = encoded_options(encoded_df, key+value)
+            # Reset to 0 the other options
+            for option_col in option_cols:
+                new_row[option_col] = 0
+            # Set to 1 the new option choosen
+            new_row[key+value] = 1
+        # Quantitative and boolean values
+        else:
+            new_row[key] = value
+    return new_row
+
 # --------------------
 # GENERAL EVALUATION
 # --------------------
@@ -194,6 +240,7 @@ def sample_judgement(test_df, model, row):
     '''
     temp_df = test_df.copy()
     temp_df = clean_df(temp_df)
+    return temp_df.shape, len(row)
     temp_df = temp_df.append(row)
     app_predict = model.predict(temp_df)[-1]
     app_predict = int(app_predict)
@@ -202,7 +249,7 @@ def sample_judgement(test_df, model, row):
 
 
 # --------------------
-# STRENGTHS & WEAKNESSES
+# MOST IMPORTANT FEATURES
 # --------------------
 def most_important_features_table(X, model, n_feat=6):
     '''
@@ -224,6 +271,90 @@ def most_important_features_list(X, model, n_feat=6):
     features = most_important_features_table(X, model, n_feat)
     features = list(features.index)
     return features
+
+
+
+# --------------------
+# APPLICANT STATUS
+# --------------------
+class decision_indicator():
+    '''
+    Circle whose color can be red, orange or green according the decision taken.
+    '''
+    def __init__(self, test_df, model):
+        self.df = test_df
+        self.model = model
+
+
+    def display_circle(self, t_row):
+        '''
+        
+        '''
+        st.header("Decision")
+        color = credit_allocation(self.df, self.model, t_row)
+        # Colored circle
+        circle = matplotlib.patches.Circle(
+            (0.5, 0.5),
+            radius=0.2,
+            color=color,
+            alpha=0.6,
+            edgecolor="black",
+            linewidth=1)
+        fig, ax = plt.subplots(figsize=(5, 5))
+        ax.add_patch(circle)
+        ax.axis('off')
+        return fig
+
+
+
+class liability_scale():
+    '''
+    Object that displays the probability that the applicant to be reliable.
+    '''
+    def __init__(self, test_df, model):
+        self.df = test_df
+        self.model = model
+
+
+    def display_scale(self, t_row):
+        '''
+        Displays the scale.
+        '''
+        st.header("Score")
+        lines = [[(0, 0), (40, 0)],
+                 [(40, 0), (50, 0)],
+                 [(50, 0), (100, 0)]]
+        colors = np.array(['red', 'orange', 'green'])
+        lc = mc.LineCollection(
+            lines,
+            colors=colors,
+            linewidths=10,
+            alpha=0.6)
+        fig, ax = plt.subplots(figsize=(5, 1))
+        # Applicant-specific arrow
+        app_score = solvability_score(self.df, self.model, t_row)
+        ax.arrow(app_score, -2,
+                 0, 1,
+                 head_width=2, head_length=0.5,
+                 fc='k', ec='k')
+        # Text with applicant score
+        ax.text(app_score-2, -2.5,
+                int(app_score),
+                fontsize=8)
+        # Text of scale
+        ax.text(0-1, 0.5, 0, fontsize=8)
+        ax.text(10-1, 0.5, 'Not reliable', fontsize=8, color='r')
+        ax.text(40-3, 0.5, 40, fontsize=8)
+        ax.text(50-1, 0.5, 50, fontsize=8)
+        ax.text(68-1, 0.5, 'Reliable', fontsize=8, color='g')
+        ax.text(100-2, 0.5, 100, fontsize=8)
+        # Other settings
+        ax.axis('off')
+        # Plot
+        ax.add_collection(lc)
+        ax.autoscale()
+        ax.margins(0.1)
+        return fig
 
 
 
@@ -293,19 +424,39 @@ def plot_cust_pos_quant_feat(train_df, test_df, feature, row):
     Plot the position of the choosen customer among the population of other
     customers, for a quantitative feature.
     '''
-    # POSITION OF THE APPLICANT
-    app_feature_value = row[feature]
-    app_feature_value = round(app_feature_value, 3)
-    # Plot distributions
-    h = sns.displot(train_df,
-                    x=feature,
-                    hue='TARGET',
-                    kind='kde',
-                    bw_adjust=.3,
-                    fill=True)
+    # Applicant's position
+    app_value = row[feature]
+    app_value = round(app_value, 3)
+    # Plot
+    distr = train_df[train_df['TARGET']==1]
+    fig, (ax_box, ax_dist) = plt.subplots(2, 1,
+                                          sharex=True,
+                                          gridspec_kw={'height_ratios': [1, 5]})
+    fig.suptitle('Repartition of successful applicants')
+    # Show main characteristics
+    sns.boxplot(distr[feature],
+                color='green',
+                boxprops=dict(edgecolor='k',
+                              alpha=0.5),
+                ax=ax_box)
+    ax_box.set(xlabel='')
     # Plot applicant position
+    ax_dist.axvline(x=app_value,
+                    c='k',
+                    linestyle='--',
+                    label='Selected applicant',
+                    linewidth=1)
+    ax_dist.legend(loc='best')
+    # Show distribution
+    sns.kdeplot(data=distr,
+                 x=feature,
+                 color='green',
+                 alpha=0.5,
+                 bw_adjust=.3,
+                 fill=True,
+                 ax=ax_dist)
 
-    return h
+    return fig
 
 
 def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, model, feature, row):
