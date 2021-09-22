@@ -97,23 +97,23 @@ def original_string(orig_col, option):
     return new_string
 
 
-def orig_encoded_feat(feature_name):
+def orig_encoded_feat(feature):
     '''
     Returns the name of the original qualitative feature.
     '''
     for cat_col in CAT_COLS:
-        if cat_col in feature_name:
+        if cat_col in feature:
             return cat_col
     return False
 
 
-def orig_encoded_option(feature_name):
+def orig_encoded_option(feature):
     '''
     Returns the name of the original qualitative option.
     '''
     for cat_col in CAT_COLS:
-        if cat_col in feature_name:
-            return feature_name.split(cat_col)[-1]
+        if cat_col in feature:
+            return feature.split(cat_col)[-1]
     return False
 
 
@@ -131,20 +131,24 @@ def encoded_options(encoded_df, feature_name):
     return options_col
 
 
-def app_spec_option(encoded_df, feature_name, app_id):
+def app_spec_option(df, feature, row):
     '''
-    Returns the name of the original qualitative option.
+    Returns the name of the qualitative option of the given row.
     '''
-    options_col = encoded_options(encoded_df, feature_name)
-    temp_dict = dict(encoded_df[options_col].loc[app_id])
-    for key in temp_dict.keys():
-        if temp_dict[key] == 1:
-            option = key
-    try:
-        if option:
-            return option
-    except:
-        return 'Not available'
+    
+    if int(row[feature]) == 1:
+        option = orig_encoded_option(feature)
+    elif int(row[feature]) == 0:
+        orig_col = orig_encoded_feat(feature)
+        options_cols = [col for col in df.columns if orig_col in col]
+        for col in options_cols:
+            if row[col] == 1:
+                option = orig_encoded_option(col)
+        try:
+            option
+        except:
+            option = 'Not available'
+    return option
 
 
 def feature_type(test_df, model, feature_name):
@@ -180,7 +184,8 @@ def sets_difference(df, row):
 
 def row_from_widgets_dict(widgets_dict, orig_row, encoded_df):
     '''
-    Make a row out of the widgets results
+    Make a row out of the widgets results.
+    Must take into account the updates.
     '''
     new_row = orig_row.copy()
     for key, value in widgets_dict:
@@ -197,8 +202,36 @@ def row_from_widgets_dict(widgets_dict, orig_row, encoded_df):
             new_row[key] = value
     return new_row
 
+
+
 # --------------------
-# GENERAL EVALUATION
+# MOST IMPORTANT FEATURES
+# --------------------
+def most_important_features_table(X, model, n_feat=6):
+    '''
+    Display the n_feat most important feature.
+    '''
+    feature_importances = pd.Series(model.feature_importances_,
+                                    index=X.columns)
+    feature_importances = feature_importances.sort_values(ascending=False)
+    feature_importances = feature_importances[:n_feat]
+    return feature_importances
+
+
+def most_important_features_list(X, model, n_feat=6):
+    '''
+    Given a dataframe and a classification model, returns the list of the most
+    important features.
+    The model must be already trained on a train set.
+    '''
+    features = most_important_features_table(X, model, n_feat)
+    features = list(features.index)
+    return features
+
+
+
+# --------------------
+# APPLICANT STATUS
 # --------------------
 def solvability_score(test_df, model, row):
     '''
@@ -248,35 +281,6 @@ def sample_judgement(test_df, model, row):
     
 
 
-# --------------------
-# MOST IMPORTANT FEATURES
-# --------------------
-def most_important_features_table(X, model, n_feat=6):
-    '''
-    Display the n_feat most important feature.
-    '''
-    feature_importances = pd.Series(model.feature_importances_,
-                                    index=X.columns)
-    feature_importances = feature_importances.sort_values(ascending=False)
-    feature_importances = feature_importances[:n_feat]
-    return feature_importances
-
-
-def most_important_features_list(X, model, n_feat=6):
-    '''
-    Given a dataframe and a classification model, returns the list of the most
-    important features.
-    The model must be already trained on a train set.
-    '''
-    features = most_important_features_table(X, model, n_feat)
-    features = list(features.index)
-    return features
-
-
-
-# --------------------
-# APPLICANT STATUS
-# --------------------
 class decision_indicator():
     '''
     Circle whose color can be red, orange or green according the decision taken.
@@ -359,7 +363,7 @@ class liability_scale():
 
 
 # --------------------
-# PLOT THE CANDIDATE'S POSITION
+# PLOT THE APPLICANT'S POSITION
 # --------------------
 def plot_customer_position(train_df, test_df, orig_train_df, model, row, feature_name):
     '''
@@ -473,7 +477,7 @@ def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, model, feature, ro
     # Get the root feature
     original_col = orig_encoded_feat(feature)
     # Get the value taken by the candidate
-    app_category = app_spec_option(test_df, feature, row['ID'])
+    app_category = app_spec_option(test_df, feature, row)
     if value == 0:
         # Among columns coming from the same original_col,
         # find the one that contains 1
@@ -483,16 +487,7 @@ def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, model, feature, ro
                 app_category = app_category.split(original_col)[-1]
     else:
         app_category = feature.split(original_col)[-1]
-    #
-    try:
-        app_category = app_category[1:].replace('_', ' ')
-    except:
-        # Data is not available, although the feature is important.
-        # The applicant should give this information.
-        return print('\'{}\' feature is not available, although'
-                     ' important for the final decision.\n\nAsk the applicant'
-                     ' for the corresponding information.'.format(
-                         original_col))
+    app_category = app_category[1:]
     # Get the categorical distribution for accepted applicants
     train_1_df = orig_train_df[orig_train_df['TARGET']==1]
     train_1_df = pd.DataFrame(train_1_df[original_col].value_counts())

@@ -28,6 +28,8 @@ st.set_page_config(layout='centered')
 # --------------------
 #@st.cache(allow_output_mutation=True)
 train_df, test_df, orig_train_df, model = load_data(PATH, MODEL_PATH)
+# Get the most important features
+main_features_row = most_important_features_list(test_df, model, n_feat=6)
 
 
 
@@ -52,14 +54,10 @@ row = orig_row
 # --------------------
 st.sidebar.markdown('''---''')
 st.sidebar.subheader("Settings")
-# Reset the settings
-back_to_original_row = st.sidebar.button('Update')
-if back_to_original_row:
-    row = orig_row
-
+# Reset values
+#if st.sidebar.button('Update'):
+#    row = orig_row
 widgets = {}
-# Get the most important features
-main_features_row = most_important_features_list(test_df, model, n_feat=6)
 for i, feature_name in enumerate(main_features_row):
     # Categorical variable
     if orig_encoded_feat(feature_name):
@@ -70,17 +68,17 @@ for i, feature_name in enumerate(main_features_row):
         options = list(orig_train_df[orig_col].dropna().unique())
         options.append('Not available')
         # Index
-        if back_to_original_row:
-            index = int(orig_row[feature_name])
-        else:
-            app_option = app_spec_option(test_df, feature_name, applicant_id)
-            for l, option in enumerate(options):
-                if option in app_option:
-                    index = l
+        app_option = app_spec_option(test_df, feature_name, row)
+        for l, option in enumerate(options):
+            if option in app_option:
+                index = l
+                break
+        #st.write(' - '.join([label, option, str(index)]))
         widget_key = st.sidebar.selectbox(
             label=label,
             options=options,
-            index=index)
+            index=index)#,
+            #on_change=refresh)
         # Save the original feature
         if widget_key != 'Not available':
             widget_key = original_string(orig_col, widget_key)
@@ -88,13 +86,10 @@ for i, feature_name in enumerate(main_features_row):
             widgets[label] = widget_key
     # Boolean variable
     elif test_df[feature_name].nunique() == 2:
-        if back_to_original_row:
-            app_value = int(orig_row[feature_name])
+        if int(row[feature_name]) == 1:
+            app_value = 1
         else:
-            if int(test_df[feature_name].loc[applicant_id]) == 1:
-                app_value = 1
-            else:
-                app_value = 0
+            app_value = 0
         widgets[main_features_row[i]] = st.sidebar.radio(
             feature_name,
             (0, 1),
@@ -163,7 +158,6 @@ for feature_name in test_df.columns:
     else:
         orig_cols.append(feature_name)
 orig_cols = list(dict.fromkeys(orig_cols))
-
 non_modificable_cols = ['CNT FAM MEMBERS',
                         'EXT SOURCE 1',
                         'EXT SOURCE 2',
@@ -171,11 +165,10 @@ non_modificable_cols = ['CNT FAM MEMBERS',
                         'WEEKDAY APPR PROCESS START',
                         'HOUR APPR PROCESS START',
                         'log HOUR APPR PROCESS START prev']
-
 for element in non_modificable_cols:
     orig_cols.remove(element)
 
-col40, col41, col42 = st.columns([1, 2, 1])
+col40, col41, col42 = st.columns([1, 3, 1])
 with col41:
     feature = st.selectbox(label='',
                            options=orig_cols)
