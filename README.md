@@ -3,7 +3,7 @@
 Welcome to the credit loan scoring application.
 
 With this app, you get a support in your decision for credit allowance.
-Please follow the next steps:
+Here are the first steps:
 
 1. Launch the application with this ##link##;
 2. Select an applicant ID;
