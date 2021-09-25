@@ -1,6 +1,6 @@
 # credit_loan_scoring_model
 
-Welcome on the credit loan scoring application.
+Welcome to the credit loan scoring application.
 
 With this app, you get a support in your decision for credit allowance.
 Please follow the next steps:
@@ -12,4 +12,4 @@ Please follow the next steps:
 
 Enjoy your app!
 
-I will be pleased to provide support via delormebenoit211@gmail.com.
+I will be pleased to provide support: delormebenoit211@gmail.com.
