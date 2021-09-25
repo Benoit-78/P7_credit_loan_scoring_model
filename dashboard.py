@@ -1,4 +1,8 @@
-# Green status applicant nb. 105966
+
+# Red to orange status applicant nb. 105966
+# Orange to green status applicant: nb. 117298
+# Green status applicant nb. 117417
+
 
 # --------------------
 # IMPORTS
