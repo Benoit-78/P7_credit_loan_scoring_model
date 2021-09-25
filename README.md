@@ -8,7 +8,7 @@ Please follow the next steps:
 1. Launch the application with this ##link##;
 2. Select an applicant ID;
 3. Have a look at its performances;
-4. Change the values of the features to modify the applicant's score.
+4. Change the values of the features to modify the applicant's performances.
 
 Enjoy your app!
 
