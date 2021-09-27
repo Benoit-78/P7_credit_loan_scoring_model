@@ -281,6 +281,9 @@ def sample_judgement(test_df, model, row):
     
 
 
+# --------------------
+# PLOT THE APPLICANT'S POSITION
+# --------------------
 class decision_indicator():
     '''
     Circle whose color can be red, orange or green according the decision taken.
@@ -362,9 +365,6 @@ class liability_scale():
 
 
 
-# --------------------
-# PLOT THE APPLICANT'S POSITION
-# --------------------
 def plot_customer_position(train_df, test_df, orig_train_df, model, row, feature_name):
     '''
     Plot the position of the applicant among the population of former
