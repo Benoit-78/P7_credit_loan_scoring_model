@@ -6,9 +6,10 @@ With this app, you get a support in your decision for credit allowance.
 Here are the first steps:
 
 1. Launch the application with this ##link##;
-2. Select an applicant ID;
-3. Have a look at its performances;
-4. Change the values of the features to modify the applicant's performances.
+2. [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://github.com/Benoit-78/credit_loan_scoring_model/app.py)
+3. Select an applicant ID;
+4. Have a look at its performances;
+5. Change the values of the features to modify the applicant's performances.
 
 Enjoy your app!
 
