@@ -20,11 +20,11 @@ from matplotlib import pyplot as plt, patches
 # --------------------
 # CONSTANTS
 # --------------------
-GITHUBPATH = 'https://github.com/Benoit-78/credit_loan_scoring_model'
+GITHUBPATH = 'https://github.com/Benoit-78/credit_loan_scoring_model/'
 #PATH = 'C:\\Users\\benoi\\Documents\\20.3 Informatique\\Data Science\\0_process\\P7 Modèle de scoring\\40 dossier_git'
 PATH = GITHUBPATH
 #os.chdir(PATH)
-MODEL_PATH = PATH + '/tree/main/back_end/fitted_xgb.pkl?raw=true'
+MODEL_PATH = PATH + 'back_end/fitted_xgb.pkl?raw=true'
 
 st.set_page_config(layout='centered')
 
