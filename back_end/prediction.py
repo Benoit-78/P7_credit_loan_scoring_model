@@ -61,13 +61,13 @@ def load_data(path, model_path):
     Make data and model ready to use.
     '''
     # Sample of processed TRAIN set
-    train_df = pd.read_csv(path + 'data/app_samp_train.csv')
+    train_df = pd.read_csv(path + '/main/data/app_samp_train.csv?raw=true')
     train_df.set_index('SK_ID_CURR', inplace=True)
     # Sample of processed TEST set
-    test_df = pd.read_csv(path + 'data/app_samp_test.csv')
+    test_df = pd.read_csv(path + '/main/data/app_samp_test.csv?raw=true')
     test_df.set_index('SK_ID_CURR', inplace=True)
     # Sample of unprocessed train set, to get the distributions
-    orig_train_df = pd.read_csv(path + 'data/orig_train_samp.csv')
+    orig_train_df = pd.read_csv(path + '/main/data/orig_train_samp.csv?raw=true')
     orig_train_df.set_index('SK ID CURR', inplace=True)    
     for feature in orig_train_df.columns:
         orig_train_df[feature].replace('/', ' ', regex=True, inplace=True)
