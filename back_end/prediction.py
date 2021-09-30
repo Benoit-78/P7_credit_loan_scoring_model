@@ -17,8 +17,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import pickle
 import seaborn as sns
 import streamlit as st
+import urllib.request
 import xgboost as xgb
 
 from matplotlib import collections  as mc
@@ -73,8 +75,9 @@ def load_data(path, model_path):
         orig_train_df[feature].replace('/', ' ', regex=True, inplace=True)
         orig_train_df[feature].replace('_', ' ', regex=True, inplace=True)
     # model
-    model = xgb.XGBClassifier()
-    model.load_model(model_path)
+    # model = xgb.XGBClassifier()
+    # model.load_model(model_path)
+    model = pickle.load(urllib.request.urlopen(model_path))
     # Return 
     return train_df, test_df, orig_train_df, model
 
