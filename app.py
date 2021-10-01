@@ -28,6 +28,9 @@ MODEL_PATH = PATH + '/blob/main/back_end/fitted_xgb.pkl?raw=true'
 
 st.set_page_config(layout='centered')
 
+st.write(PATH)
+st.write(MODEL_PATH)
+
 # --------------------
 # LOAD DATA AND MODEL
 # --------------------
