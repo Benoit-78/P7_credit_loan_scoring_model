@@ -10,9 +10,7 @@
 
 
 
-# --------------------
 # IMPORTS
-# --------------------
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -29,9 +27,7 @@ from matplotlib import pyplot as plt, patches
 
 
 
-# --------------------
 # CONSTANTS
-# --------------------
 CAT_COLS = ['CHANNEL TYPE',
             'CODE REJECT REASON',
             #'CREDIT_ACTIVE',
@@ -55,13 +51,9 @@ CAT_COLS = ['CHANNEL TYPE',
 
 
 
-# --------------------
 # PROCESS AND CLEANING
-# --------------------
-def load_data(path, model_path):
-    '''
-    Make data and model ready to use.
-    '''
+def load_data(path):
+    '''Load .csv data and makes them easy to use.'''
     # Sample of processed TRAIN set
     #train_df = pd.read_csv(path + '\\data\\app_samp_train.csv')
     train_df = pd.read_csv(path + '/blob/main/data/app_samp_train.csv?raw=true')
@@ -77,14 +69,18 @@ def load_data(path, model_path):
     for feature in orig_train_df.columns:
         orig_train_df[feature].replace('/', ' ', regex=True, inplace=True)
         orig_train_df[feature].replace('_', ' ', regex=True, inplace=True)
+    # Return 
+    return train_df, test_df, orig_train_df
+
+
+def load_model(model_path):
+    '''Load pickelised model'''
     # model
     #model = xgb.XGBClassifier()
     #model.load_model(model_path)
     #model = pickle.load(open(model_path, 'rb'))
     model = pickle.load(urllib.request.urlopen(model_path))
-    # Return 
-    return train_df, test_df, orig_train_df, model
-
+    return model
 
 def readable_string(my_string):
     '''
@@ -210,10 +206,7 @@ def row_from_widgets_dict(widgets_dict, orig_row, encoded_df):
     return new_row
 
 
-
-# --------------------
 # MOST IMPORTANT FEATURES
-# --------------------
 def most_important_features_table(X, model, n_feat=6):
     '''
     Display the n_feat most important feature.
@@ -236,10 +229,7 @@ def most_important_features_list(X, model, n_feat=6):
     return features
 
 
-
-# --------------------
 # APPLICANT STATUS
-# --------------------
 def solvability_score(test_df, model, row):
     '''
     Return the probability in % for the sample to be attributed the note 1.
@@ -287,10 +277,7 @@ def sample_judgement(test_df, model, row):
     return app_predict
     
 
-
-# --------------------
 # PLOT THE APPLICANT'S POSITION
-# --------------------
 class decision_indicator():
     '''
     Circle whose color can be red, orange or green according the decision taken.

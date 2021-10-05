@@ -37,7 +37,8 @@ st.write(MODEL_PATH)
 # LOAD DATA AND MODEL
 # --------------------
 #@st.cache(allow_output_mutation=True)
-train_df, test_df, orig_train_df, model = load_data(PATH, MODEL_PATH)
+train_df, test_df, orig_train_df = load_data(PATH)
+model = load_model(MODEL_PATH)
 # Get the most important features
 main_features_row = most_important_features_list(test_df, model, n_feat=6)
 
