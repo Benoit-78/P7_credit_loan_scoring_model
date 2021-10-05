@@ -76,11 +76,12 @@ def load_data(path):
 def load_model(model_path):
     '''Load pickelised model'''
     # model
-    #model = xgb.XGBClassifier()
-    #model.load_model(model_path)
+    model = xgb.XGBClassifier()
+    model.load_model(model_path)
     #model = pickle.load(open(model_path, 'rb'))
-    model = pickle.load(urllib.request.urlopen(model_path))
+    #model = pickle.load(urllib.request.urlopen(model_path))
     return model
+
 
 def readable_string(my_string):
     '''
