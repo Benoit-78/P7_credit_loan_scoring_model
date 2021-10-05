@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pickle
+import requests
 import seaborn as sns
 import streamlit as st
 import urllib.request
@@ -53,7 +54,7 @@ CAT_COLS = ['CHANNEL TYPE',
 
 # PROCESS AND CLEANING
 def load_data(path):
-    '''Load .csv data and makes them easy to use.'''
+    """Load .csv data and makes them easy to use."""
     # Sample of processed TRAIN set
     #train_df = pd.read_csv(path + '\\data\\app_samp_train.csv')
     train_df = pd.read_csv(path + '/blob/main/data/app_samp_train.csv?raw=true')
@@ -73,38 +74,58 @@ def load_data(path):
     return train_df, test_df, orig_train_df
 
 
+def get_confirm_token(response):
+    for key, value in response.cookies.items():
+        if key.startswith('download_warning'):
+            return value
+    return None
+
+def save_response_content(response, destination):
+    CHUNK_SIZE = 32768
+    with open(destination, "wb") as f:
+        for chunk in response.iter_content(CHUNK_SIZE):
+            if chunk: # filter out keep-alive new chunks
+                f.write(chunk)
+
+def download_file_from_google_drive(id, destination):
+    URL = 'https://drive.google.com/drive/folders/1ZB4fXNTjHRDpyePpdCCdqmihF0s-svAB?usp=sharing'
+    session = requests.Session()
+    response = session.get(URL, params = { 'id' : id }, stream = True)
+    token = get_confirm_token(response)
+    if token:
+        params = { 'id' : id, 'confirm' : token }
+        response = session.get(URL, params = params, stream = True)
+    save_response_content(response, destination)
+
+
 def load_model(model_path):
-    '''Load pickelised model'''
+    """Load pickelised model"""
     # model
-    model = xgb.XGBClassifier()
-    model.load_model(model_path)
+    #model = xgb.XGBClassifier()
+    #model.load_model(model_path)
     #model = pickle.load(open(model_path, 'rb'))
-    #model = pickle.load(urllib.request.urlopen(model_path))
+    model = pickle.load(urllib.request.urlopen(model_path))
     return model
 
 
 def readable_string(my_string):
-    '''
-    Returns the name of the original qualitative feature without underscores.
-    '''
+    """Returns the name of the original qualitative feature without underscores."""
     my_string = my_string.replace('_', ' ')
     my_string.capitalize()
     return my_string
 
 
 def original_string(orig_col, option):
-    '''
+    """
 
-    '''
+    """
     new_string = orig_col.upper() + ' ' + option
     #new_string = new_string.replace(' ', '_')
     return new_string
 
 
 def orig_encoded_feat(feature):
-    '''
-    Returns the name of the original qualitative feature.
-    '''
+    """Returns the name of the original qualitative feature."""
     for cat_col in CAT_COLS:
         if cat_col in feature:
             return cat_col
@@ -112,9 +133,9 @@ def orig_encoded_feat(feature):
 
 
 def orig_encoded_option(feature):
-    '''
+    """
     Returns the name of the original qualitative option.
-    '''
+    """
     for cat_col in CAT_COLS:
         if cat_col in feature:
             return feature.split(cat_col)[-1]
@@ -122,10 +143,10 @@ def orig_encoded_option(feature):
 
 
 def encoded_options(encoded_df, feature_name):
-    '''
+    """
     Given an encoded column name, returns the list of the other options
     for the same original column before encoding.
-    '''
+    """
     orig_col = orig_encoded_feat(feature_name)
     options_col = []
     if orig_col:
@@ -136,9 +157,9 @@ def encoded_options(encoded_df, feature_name):
 
 
 def app_spec_option(df, feature, row):
-    '''
+    """
     Returns the name of the qualitative option of the given row.
-    '''
+    """
     
     if int(row[feature]) == 1:
         option = orig_encoded_option(feature)
@@ -156,12 +177,12 @@ def app_spec_option(df, feature, row):
 
 
 def feature_type(test_df, model, feature_name):
-    '''
+    """
     Determine the type of the feature:
     - Categorical,
     - Boolean,
     - or Qualitative
-    '''
+    """
     if orig_encoded_feat(feature_name):
         return 'Qualitative'
     elif test_df[feature_name].nunique() == 2:
@@ -171,26 +192,26 @@ def feature_type(test_df, model, feature_name):
 
 
 def clean_df(df):
-    '''
+    """
 
-    '''
+    """
     return df.rename(lambda x: x.replace('_', ' '), axis='columns')
 
 
 def sets_difference(df, row):
-    '''
+    """
 
-    '''
+    """
     row_set = set(row.index)
     df_set = set(df.columns)
     return df_set.difference(row_set), row_set.difference(df_set)
 
 
 def row_from_widgets_dict(widgets_dict, orig_row, encoded_df):
-    '''
+    """
     Make a row out of the widgets results.
     Must take into account the updates.
-    '''
+    """
     new_row = orig_row.copy()
     for key, value in widgets_dict:
         # Qualitative values
@@ -209,9 +230,9 @@ def row_from_widgets_dict(widgets_dict, orig_row, encoded_df):
 
 # MOST IMPORTANT FEATURES
 def most_important_features_table(X, model, n_feat=6):
-    '''
+    """
     Display the n_feat most important feature.
-    '''
+    """
     feature_importances = pd.Series(model.feature_importances_,
                                     index=X.columns)
     feature_importances = feature_importances.sort_values(ascending=False)
@@ -220,11 +241,11 @@ def most_important_features_table(X, model, n_feat=6):
 
 
 def most_important_features_list(X, model, n_feat=6):
-    '''
+    """
     Given a dataframe and a classification model, returns the list of the most
     important features.
     The model must be already trained on a train set.
-    '''
+    """
     features = most_important_features_table(X, model, n_feat)
     features = list(features.index)
     return features
@@ -232,10 +253,10 @@ def most_important_features_list(X, model, n_feat=6):
 
 # APPLICANT STATUS
 def solvability_score(test_df, model, row):
-    '''
+    """
     Return the probability in % for the sample to be attributed the note 1.
     model must be already fitted to the train set.
-    '''
+    """
     temp_df = test_df.copy()
     # Adapt the columns names, without underscore
     temp_df = clean_df(temp_df)
@@ -250,9 +271,9 @@ def solvability_score(test_df, model, row):
 
 
 def credit_allocation(test_df, model, row):
-    '''
+    """
     Provides with the color corresponding to the judgement.
-    '''
+    """
     score = solvability_score(test_df, model, row)
     if score < 40 and score >= 0:
         note = 'red'
@@ -266,9 +287,9 @@ def credit_allocation(test_df, model, row):
 
 
 def sample_judgement(test_df, model, row):
-    '''
+    """
     Determine if the applicant is eligible or not.
-    '''
+    """
     temp_df = test_df.copy()
     temp_df = clean_df(temp_df)
     return temp_df.shape, len(row)
@@ -280,18 +301,18 @@ def sample_judgement(test_df, model, row):
 
 # PLOT THE APPLICANT'S POSITION
 class decision_indicator():
-    '''
+    """
     Circle whose color can be red, orange or green according the decision taken.
-    '''
+    """
     def __init__(self, test_df, model):
         self.df = test_df
         self.model = model
 
 
     def display_circle(self, t_row):
-        '''
-        
-        '''
+        """
+
+        """
         st.header("Decision")
         color = credit_allocation(self.df, self.model, t_row)
         # Colored circle
@@ -310,18 +331,18 @@ class decision_indicator():
 
 
 class liability_scale():
-    '''
+    """
     Object that displays the probability that the applicant to be reliable.
-    '''
+    """
     def __init__(self, test_df, model):
         self.df = test_df
         self.model = model
 
 
     def display_scale(self, t_row):
-        '''
+        """
         Displays the scale.
-        '''
+        """
         st.header("Score")
         lines = [[(0, 0), (40, 0)],
                  [(40, 0), (50, 0)],
@@ -361,10 +382,10 @@ class liability_scale():
 
 
 def plot_customer_position(train_df, test_df, orig_train_df, model, row, feature_name):
-    '''
+    """
     Plot the position of the applicant among the population of former
     applicants.
-    '''
+    """
     featuretype = feature_type(test_df, model, feature_name)
     if featuretype == 'Qualitative':
         #return 'Categorical'
@@ -390,10 +411,10 @@ def plot_customer_position(train_df, test_df, orig_train_df, model, row, feature
 
 
 def plot_cust_pos_bool_feat(train_df, test_df, model, feat, row):
-    '''
+    """
     Plot the position of the applicant for a boolean feature.
     Criterion is to have only 2 values in the column.
-    '''
+    """
     value = row[feat]
     judgement = sample_judgement(test_df, model, row)
     # Get the distribution with/without the feature, granted/refused loan.
@@ -419,10 +440,10 @@ def plot_cust_pos_bool_feat(train_df, test_df, model, feat, row):
     
 
 def plot_cust_pos_quant_feat(train_df, test_df, feature, row):
-    '''
+    """
     Plot the position of the choosen customer among the population of other
     customers, for a quantitative feature.
-    '''
+    """
     # Applicant's position
     app_value = row[feature]
     app_value = round(app_value, 3)
@@ -459,14 +480,14 @@ def plot_cust_pos_quant_feat(train_df, test_df, feature, row):
 
 
 def plot_cust_pos_qual_feat(train_df, test_df, orig_train_df, model, feature, row):
-    '''
+    """
     Plot the position of the choosen customer among the population of other
     customers, for a quantitative feature.
-    
+
     Warning: it is not very accurate to use orig_train_df, as it corresponds
     to the very original dataframe, without the feature engineering
     (nan values, outliers, ...).
-    '''
+    """
     # Get the corresponding value for the customer
     value = row[feature]
     # Get the root feature
