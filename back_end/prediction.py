@@ -80,12 +80,14 @@ def get_confirm_token(response):
             return value
     return None
 
+
 def save_response_content(response, destination):
     CHUNK_SIZE = 32768
     with open(destination, "wb") as f:
         for chunk in response.iter_content(CHUNK_SIZE):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
+
 
 def download_file_from_google_drive(id, destination):
     URL = 'https://drive.google.com/drive/folders/1ZB4fXNTjHRDpyePpdCCdqmihF0s-svAB?usp=sharing'

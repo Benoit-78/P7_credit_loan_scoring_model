@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="2nd try-out with dowloading from google drive">
+    <list default="true" id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back_end/prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/back_end/prediction.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +55,7 @@
       <workItem from="1633453793661" duration="2716000" />
       <workItem from="1633460859427" duration="1902000" />
       <workItem from="1633538845495" duration="558000" />
-      <workItem from="1633680697148" duration="2161000" />
+      <workItem from="1633680697148" duration="2558000" />
     </task>
     <task id="LOCAL-00001" summary="1st try-out with dowloading from google drive">
       <created>1633464862199</created>
@@ -69,7 +71,14 @@
       <option name="project" value="LOCAL" />
       <updated>1633683436207</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="3rd try-out">
+      <created>1633683903360</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1633683903360</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -78,6 +87,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1st try-out with dowloading from google drive" />
     <MESSAGE value="2nd try-out with dowloading from google drive" />
-    <option name="LAST_COMMIT_MESSAGE" value="2nd try-out with dowloading from google drive" />
+    <MESSAGE value="3rd try-out" />
+    <option name="LAST_COMMIT_MESSAGE" value="3rd try-out" />
   </component>
 </project>
