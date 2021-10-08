@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="2nd try-out with dowloading from google drive">
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1z0iqZPK4ReyHcNtRtLpYgh8Wm6" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="" />
+      <created>1633291599530</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1633291599530</updated>
+      <workItem from="1633291600579" duration="189000" />
+      <workItem from="1633291798633" duration="60000" />
+      <workItem from="1633291869283" duration="3000" />
+      <workItem from="1633339779041" duration="7185000" />
+      <workItem from="1633453651932" duration="4000" />
+      <workItem from="1633453793661" duration="2716000" />
+      <workItem from="1633460859427" duration="1902000" />
+      <workItem from="1633538845495" duration="558000" />
+      <workItem from="1633680697148" duration="1948000" />
+    </task>
+    <task id="LOCAL-00001" summary="1st try-out with dowloading from google drive">
+      <created>1633464862199</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1633464862199</updated>
+    </task>
+    <task id="LOCAL-00002" summary="2nd try-out with dowloading from google drive">
+      <created>1633683436207</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1633683436207</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="1st try-out with dowloading from google drive" />
+    <MESSAGE value="2nd try-out with dowloading from google drive" />
+    <option name="LAST_COMMIT_MESSAGE" value="2nd try-out with dowloading from google drive" />
+  </component>
+</project>

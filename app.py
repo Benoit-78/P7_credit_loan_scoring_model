@@ -25,7 +25,6 @@ PATH = 'https://github.com/Benoit-78/credit_loan_scoring_model'
 st.set_page_config(layout='centered')
 
 st.write(PATH)
-st.write(MODEL_PATH)
 
 # LOAD DATA AND MODEL
 train_df, test_df, orig_train_df = load_data(PATH)
