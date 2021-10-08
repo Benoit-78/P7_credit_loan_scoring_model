@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,7 +54,7 @@
       <workItem from="1633453793661" duration="2716000" />
       <workItem from="1633460859427" duration="1902000" />
       <workItem from="1633538845495" duration="558000" />
-      <workItem from="1633680697148" duration="3018000" />
+      <workItem from="1633680697148" duration="4520000" />
     </task>
     <task id="LOCAL-00001" summary="1st try-out with dowloading from google drive">
       <created>1633464862199</created>
@@ -83,7 +84,14 @@
       <option name="project" value="LOCAL" />
       <updated>1633684227062</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="5th">
+      <created>1633684617776</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1633684617776</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -94,6 +102,7 @@
     <MESSAGE value="2nd try-out with dowloading from google drive" />
     <MESSAGE value="3rd try-out" />
     <MESSAGE value="4th" />
-    <option name="LAST_COMMIT_MESSAGE" value="4th" />
+    <MESSAGE value="5th" />
+    <option name="LAST_COMMIT_MESSAGE" value="5th" />
   </component>
 </project>

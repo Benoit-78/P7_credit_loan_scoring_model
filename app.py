@@ -7,13 +7,13 @@
 # --------------------
 # IMPORTS
 # --------------------
-import gdown
 import os
 import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
 
 from back_end.prediction import *
+from google.colab import files
 from matplotlib import pyplot as plt, patches
 
 
@@ -21,6 +21,7 @@ from matplotlib import pyplot as plt, patches
 # CONSTANTS
 PATH = 'https://github.com/Benoit-78/credit_loan_scoring_model'
 #MODEL_PATH = PATH + '/blob/main/back_end/fitted_xgb.pkl?raw=true'
+COLAB_PATH = '/content/drive/My Drive/Colab Notebooks/ocr_data_scientist/P7 Modèle de scoring/fitted_xbg.pkl'
 
 st.set_page_config(layout='centered')
 
@@ -28,10 +29,7 @@ st.write(PATH)
 
 # LOAD DATA AND MODEL
 train_df, test_df, orig_train_df = load_data(PATH)
-#model = load_model(MODEL_PATH)
-url = 'https://drive.google.com/file/d/14NpmQImFzo95IH5daRCnt4uMa_qqxSFt/view?usp=sharing'
-model = 'fitted_xgb.pkl'
-gdown.download(url, model, quiet=False)
+model = files.download(COLAB_PATH)
 #st.write(model)
 #model = load_model(model)
 
