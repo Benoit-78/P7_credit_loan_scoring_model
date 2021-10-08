@@ -31,7 +31,7 @@ train_df, test_df, orig_train_df = load_data(PATH)
 #model = load_model(MODEL_PATH)
 url = 'https://drive.google.com/file/d/14NpmQImFzo95IH5daRCnt4uMa_qqxSFt/view?usp=sharing'
 output = 'fitted_xgb.pkl'
-model = gdown.download(url, download, quiet=Falseg)
+model = gdown.download(url, output, quiet=False)
 
 
 
