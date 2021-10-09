@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back_end/prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/back_end/prediction.py" afterDir="false" />
-    </list>
+    <list default="true" id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -57,7 +53,7 @@
       <workItem from="1633538845495" duration="558000" />
       <workItem from="1633680697148" duration="5110000" />
       <workItem from="1633723883388" duration="657000" />
-      <workItem from="1633794363293" duration="1223000" />
+      <workItem from="1633794363293" duration="1613000" />
     </task>
     <task id="LOCAL-00001" summary="1st try-out with dowloading from google drive">
       <created>1633464862199</created>
@@ -108,7 +104,14 @@
       <option name="project" value="LOCAL" />
       <updated>1633686321016</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Using request">
+      <created>1633795614027</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1633795614027</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,6 +125,7 @@
     <MESSAGE value="5th" />
     <MESSAGE value="6th - files.download" />
     <MESSAGE value="6th - files.download + google.colab" />
-    <option name="LAST_COMMIT_MESSAGE" value="6th - files.download + google.colab" />
+    <MESSAGE value="Using request" />
+    <option name="LAST_COMMIT_MESSAGE" value="Using request" />
   </component>
 </project>
