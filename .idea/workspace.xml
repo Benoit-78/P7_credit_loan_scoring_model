@@ -53,7 +53,7 @@
       <workItem from="1633538845495" duration="558000" />
       <workItem from="1633680697148" duration="5110000" />
       <workItem from="1633723883388" duration="657000" />
-      <workItem from="1633794363293" duration="1613000" />
+      <workItem from="1633794363293" duration="1944000" />
     </task>
     <task id="LOCAL-00001" summary="1st try-out with dowloading from google drive">
       <created>1633464862199</created>
@@ -111,7 +111,28 @@
       <option name="project" value="LOCAL" />
       <updated>1633795614027</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Using request - without googlecolab import">
+      <created>1633795998091</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1633795998091</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Using request - with requests module">
+      <created>1633796254630</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1633796254630</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Using request - with requests module v2">
+      <created>1633796292724</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1633796292724</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -126,6 +147,9 @@
     <MESSAGE value="6th - files.download" />
     <MESSAGE value="6th - files.download + google.colab" />
     <MESSAGE value="Using request" />
-    <option name="LAST_COMMIT_MESSAGE" value="Using request" />
+    <MESSAGE value="Using request - without googlecolab import" />
+    <MESSAGE value="Using request - with requests module" />
+    <MESSAGE value="Using request - with requests module v2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Using request - with requests module v2" />
   </component>
 </project>
