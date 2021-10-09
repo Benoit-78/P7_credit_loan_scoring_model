@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,7 +55,7 @@
       <workItem from="1633538845495" duration="558000" />
       <workItem from="1633680697148" duration="5110000" />
       <workItem from="1633723883388" duration="657000" />
-      <workItem from="1633794363293" duration="2228000" />
+      <workItem from="1633794363293" duration="2318000" />
     </task>
     <task id="LOCAL-00001" summary="1st try-out with dowloading from google drive">
       <created>1633464862199</created>
@@ -149,7 +148,14 @@
       <option name="project" value="LOCAL" />
       <updated>1633796393966</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Using request - with requests module v4">
+      <created>1633796615481</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1633796615481</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,6 +174,7 @@
     <MESSAGE value="Using request - with requests module" />
     <MESSAGE value="Using request - with requests module v2" />
     <MESSAGE value="Using request - with requests module v3" />
-    <option name="LAST_COMMIT_MESSAGE" value="Using request - with requests module v3" />
+    <MESSAGE value="Using request - with requests module v4" />
+    <option name="LAST_COMMIT_MESSAGE" value="Using request - with requests module v4" />
   </component>
 </project>
