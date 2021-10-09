@@ -26,6 +26,7 @@ st.set_page_config(layout='centered')
 train_df, test_df, orig_train_df = load_data(PATH)
 model = load_model(MODEL_PATH)
 
+# Also: save and load model config when saved as json file.
 
 
 # Get the most important features
