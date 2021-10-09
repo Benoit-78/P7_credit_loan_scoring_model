@@ -1,8 +1,8 @@
 gdown==3.6.4
 matplotlib==3.2.2
+numpy==1.19.5
+pandas==1.1.5
 requests==2.23.0
 seaborn==0.11.2
 sklearn==0.0
-pandas==1.1.5
-numpy==1.19.5
 xgboost==0.90
