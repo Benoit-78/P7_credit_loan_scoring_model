@@ -53,19 +53,37 @@ CAT_COLS = ['CHANNEL TYPE',
 
 
 # PROCESS AND CLEANING
+def is_local(path):
+    if path[0] == 'C':
+        return True
+    elif path[0] == 'h':
+        return False
+    else:
+        raise ValueError('Path must begin with \'C\' or \'h\'')
+
+
+def get_model_path():
+    if is_local(path):
+        model_path = path + '/back_end/'
+    else:
+        model_path = path + '/tree/main/back_end/'
+    model_path = model_path + 'fitted_xgb.json'
+    return model_path
+
+
 def load_data(path):
     """Load .csv data and makes them easy to use."""
-    # Sample of processed TRAIN set
-    #train_df = pd.read_csv(path + '\\data\\app_samp_train.csv')
-    train_df = pd.read_csv(path + '/blob/main/data/app_samp_train.csv?raw=true')
+    if is_local(path):
+        train_df = pd.read_csv(path + '\\data\\app_samp_train.csv')
+        test_df = pd.read_csv(path + '\\data\\app_samp_test.csv')
+        orig_train_df = pd.read_csv(path + '\\data\\orig_train_samp.csv')
+    else:
+        train_df = pd.read_csv(path + '/blob/main/data/app_samp_train.csv?raw=true')
+        test_df = pd.read_csv(path + '/blob/main/data/app_samp_test.csv?raw=true')
+        orig_train_df = pd.read_csv(path + '/blob/main/data/orig_train_samp.csv?raw=true')
+    # Reset indexes
     train_df.set_index('SK_ID_CURR', inplace=True)
-    # Sample of processed TEST set
-    #test_df = pd.read_csv(path + '\\data\\app_samp_test.csv')
-    test_df = pd.read_csv(path + '/blob/main/data/app_samp_test.csv?raw=true')
     test_df.set_index('SK_ID_CURR', inplace=True)
-    # Sample of unprocessed train set, to get the distributions
-    #orig_train_df = pd.read_csv(path + '\\data\\orig_train_samp.csv')
-    orig_train_df = pd.read_csv(path + '/blob/main/data/orig_train_samp.csv?raw=true')
     orig_train_df.set_index('SK ID CURR', inplace=True)    
     for feature in orig_train_df.columns:
         orig_train_df[feature].replace('/', ' ', regex=True, inplace=True)
