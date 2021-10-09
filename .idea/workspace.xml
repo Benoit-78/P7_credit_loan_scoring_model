@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-    </list>
+    <list default="true" id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="Using request - with requests module v7" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,7 +53,7 @@
       <workItem from="1633538845495" duration="558000" />
       <workItem from="1633680697148" duration="5110000" />
       <workItem from="1633723883388" duration="657000" />
-      <workItem from="1633794363293" duration="2364000" />
+      <workItem from="1633794363293" duration="2537000" />
     </task>
     <task id="LOCAL-00001" summary="1st try-out with dowloading from google drive">
       <created>1633464862199</created>
@@ -162,7 +160,14 @@
       <option name="project" value="LOCAL" />
       <updated>1633796704017</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Using request - with requests module v6">
+      <created>1633796748085</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1633796748085</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,6 +188,7 @@
     <MESSAGE value="Using request - with requests module v3" />
     <MESSAGE value="Using request - with requests module v4" />
     <MESSAGE value="Using request - with requests module v5" />
-    <option name="LAST_COMMIT_MESSAGE" value="Using request - with requests module v5" />
+    <MESSAGE value="Using request - with requests module v6" />
+    <option name="LAST_COMMIT_MESSAGE" value="Using request - with requests module v6" />
   </component>
 </project>
