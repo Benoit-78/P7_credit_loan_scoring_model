@@ -1,5 +1,6 @@
 gdown==3.6.4
 matplotlib==3.2.2
+requests=2.23.0
 seaborn==0.11.2
 sklearn==0.0
 pandas==1.1.5
