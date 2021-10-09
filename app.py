@@ -16,17 +16,15 @@ from matplotlib import pyplot as plt, patches
 
 # CONSTANTS
 PATH = 'https://github.com/Benoit-78/credit_loan_scoring_model'
-MODEL_PATH = PATH + '/back_end/fitted_xgb_v2.pkl'
+MODEL_PATH = PATH + '/back_end/fitted_xgb.json'
 #COLAB_PATH = '/content/drive/My Drive/Colab Notebooks/ocr_data_scientist/P7 Modèle de scoring/model/fitted_xbg.pkl'
-COLAB_PATH = 'https://drive.google.com/file/d/14NpmQImFzo95IH5daRCnt4uMa_qqxSFt/view?usp=sharing'
+#COLAB_PATH = 'https://drive.google.com/file/d/14NpmQImFzo95IH5daRCnt4uMa_qqxSFt/view?usp=sharing'
 
 st.set_page_config(layout='centered')
 
-st.write(PATH)
-
 # LOAD DATA AND MODEL
 train_df, test_df, orig_train_df = load_data(PATH)
-model = load_model(COLAB_PATH, MODEL_PATH)
+model = load_model(MODEL_PATH)
 
 
 

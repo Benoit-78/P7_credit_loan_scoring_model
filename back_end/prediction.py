@@ -100,12 +100,11 @@ def download_file_from_google_drive(id, destination):
     save_response_content(response, destination)
 
 
-def load_model(colab_path, model_path):
+def load_model(model_path):
     """Load pickelised model"""
     # model
     model = xgb.XGBClassifier()
-    myfile = requests.get(colab_path)
-    open(model_path, 'wb').write(myfile_content)
+    #open(model_path, 'wb').write(myfile_content)
     model.load_model(model_path)
     #model = pickle.load(open(model_path, 'rb'))
     #model = pickle.load(urllib.request.urlopen(model_path))
