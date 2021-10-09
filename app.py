@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt, patches
 
 # CONSTANTS
 PATH = 'https://github.com/Benoit-78/credit_loan_scoring_model'
-MODEL_PATH = PATH + '/back_end/fitted_xgb_v2.pkl'
+MODEL_PATH = PATH + '/tree/main/back_end/fitted_xgb_v2.pkl'
 #COLAB_PATH = '/content/drive/My Drive/Colab Notebooks/ocr_data_scientist/P7 Modèle de scoring/model/fitted_xbg.pkl'
 COLAB_PATH = 'https://drive.google.com/file/d/14NpmQImFzo95IH5daRCnt4uMa_qqxSFt/view?usp=sharing'
 
