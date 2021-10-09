@@ -4,6 +4,7 @@
     <list default="true" id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back_end/prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/back_end/prediction.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +37,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -54,7 +55,9 @@
       <workItem from="1633453793661" duration="2716000" />
       <workItem from="1633460859427" duration="1902000" />
       <workItem from="1633538845495" duration="558000" />
-      <workItem from="1633680697148" duration="4520000" />
+      <workItem from="1633680697148" duration="5110000" />
+      <workItem from="1633723883388" duration="657000" />
+      <workItem from="1633794363293" duration="1223000" />
     </task>
     <task id="LOCAL-00001" summary="1st try-out with dowloading from google drive">
       <created>1633464862199</created>
@@ -91,7 +94,21 @@
       <option name="project" value="LOCAL" />
       <updated>1633684617776</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="6th - files.download">
+      <created>1633686165054</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1633686165054</updated>
+    </task>
+    <task id="LOCAL-00007" summary="6th - files.download + google.colab">
+      <created>1633686321016</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1633686321016</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -103,6 +120,8 @@
     <MESSAGE value="3rd try-out" />
     <MESSAGE value="4th" />
     <MESSAGE value="5th" />
-    <option name="LAST_COMMIT_MESSAGE" value="5th" />
+    <MESSAGE value="6th - files.download" />
+    <MESSAGE value="6th - files.download + google.colab" />
+    <option name="LAST_COMMIT_MESSAGE" value="6th - files.download + google.colab" />
   </component>
 </project>

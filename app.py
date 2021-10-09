@@ -1,27 +1,23 @@
-
 # Red to orange status applicant nb. 105966
 # Orange to green status applicant: nb. 117298
 # Green status applicant nb. 117417
 
-
-# --------------------
 # IMPORTS
-# --------------------
 import os
 import pandas as pd
+import request
 import streamlit as st
 import streamlit.components.v1 as components
 
 from back_end.prediction import *
-from google.colab import files
 from matplotlib import pyplot as plt, patches
 
 
 
 # CONSTANTS
 PATH = 'https://github.com/Benoit-78/credit_loan_scoring_model'
-#MODEL_PATH = PATH + '/blob/main/back_end/fitted_xgb.pkl?raw=true'
-COLAB_PATH = '/content/drive/My Drive/Colab Notebooks/ocr_data_scientist/P7 Modèle de scoring/fitted_xbg.pkl'
+MODEL_PATH = PATH + '/model/back_end/fitted_xgb_v2.pkl'
+COLAB_PATH = '/content/drive/My Drive/Colab Notebooks/ocr_data_scientist/P7 Modèle de scoring/model/fitted_xbg.pkl'
 
 st.set_page_config(layout='centered')
 
@@ -29,9 +25,7 @@ st.write(PATH)
 
 # LOAD DATA AND MODEL
 train_df, test_df, orig_train_df = load_data(PATH)
-model = files.download(COLAB_PATH)
-#st.write(model)
-#model = load_model(model)
+model = load_model(COLAB_PATH, MODEL_PATH)
 
 
 
