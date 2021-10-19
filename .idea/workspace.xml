@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="">
+    <list default="true" id="af58a0ea-8145-4b2d-965a-7f78ab4d9854" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back_end/fitted_xgb.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/back_end/prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/back_end/prediction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soutenance/P7_soutenance.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/soutenance/P7_soutenance.pptx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,11 +15,6 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitSEFilterConfiguration">
@@ -27,8 +25,7 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="ProjectId" id="1z0iqZPK4ReyHcNtRtLpYgh8Wm6" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="1zSRd0kcVsDGgdqWeRSCEj5zb1N" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -37,187 +34,57 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="40 dossier_git" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="74a52bc4-aeea-46d0-8fcc-eb2f7cfefce1" name="Changes" comment="" />
-      <created>1633291599530</created>
+      <changelist id="af58a0ea-8145-4b2d-965a-7f78ab4d9854" name="Changes" comment="" />
+      <created>1634139589865</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1633291599530</updated>
-      <workItem from="1633291600579" duration="189000" />
-      <workItem from="1633291798633" duration="60000" />
-      <workItem from="1633291869283" duration="3000" />
-      <workItem from="1633339779041" duration="7185000" />
-      <workItem from="1633453651932" duration="4000" />
-      <workItem from="1633453793661" duration="2716000" />
-      <workItem from="1633460859427" duration="1902000" />
-      <workItem from="1633538845495" duration="558000" />
-      <workItem from="1633680697148" duration="5110000" />
-      <workItem from="1633723883388" duration="657000" />
-      <workItem from="1633794363293" duration="7406000" />
-      <workItem from="1633821861915" duration="1610000" />
+      <updated>1634139589865</updated>
+      <workItem from="1634139592268" duration="129000" />
+      <workItem from="1634152322505" duration="5025000" />
+      <workItem from="1634175901274" duration="1702000" />
+      <workItem from="1634220883199" duration="826000" />
+      <workItem from="1634222534296" duration="36000" />
+      <workItem from="1634222692553" duration="1814000" />
+      <workItem from="1634224680158" duration="238000" />
+      <workItem from="1634237899246" duration="3977000" />
+      <workItem from="1634311022933" duration="623000" />
+      <workItem from="1634421672348" duration="3420000" />
+      <workItem from="1634485944630" duration="306000" />
+      <workItem from="1634648980173" duration="138000" />
     </task>
-    <task id="LOCAL-00001" summary="1st try-out with dowloading from google drive">
-      <created>1633464862199</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1633464862199</updated>
-    </task>
-    <task id="LOCAL-00002" summary="2nd try-out with dowloading from google drive">
-      <created>1633683436207</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1633683436207</updated>
-    </task>
-    <task id="LOCAL-00003" summary="3rd try-out">
-      <created>1633683903360</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1633683903360</updated>
-    </task>
-    <task id="LOCAL-00004" summary="4th">
-      <created>1633684227062</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1633684227062</updated>
-    </task>
-    <task id="LOCAL-00005" summary="5th">
-      <created>1633684617776</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1633684617776</updated>
-    </task>
-    <task id="LOCAL-00006" summary="6th - files.download">
-      <created>1633686165054</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1633686165054</updated>
-    </task>
-    <task id="LOCAL-00007" summary="6th - files.download + google.colab">
-      <created>1633686321016</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1633686321016</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Using request">
-      <created>1633795614027</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1633795614027</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Using request - without googlecolab import">
-      <created>1633795998091</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1633795998091</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Using request - with requests module">
-      <created>1633796254630</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1633796254630</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Using request - with requests module v2">
-      <created>1633796292724</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1633796292724</updated>
-    </task>
-    <task id="LOCAL-00012" summary="Using request - with requests module v2">
-      <created>1633796336812</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1633796336812</updated>
-    </task>
-    <task id="LOCAL-00013" summary="Using request - with requests module v3">
-      <created>1633796393966</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1633796393966</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Using request - with requests module v4">
-      <created>1633796615481</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1633796615481</updated>
-    </task>
-    <task id="LOCAL-00015" summary="Using request - with requests module v5">
-      <created>1633796704017</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1633796704017</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Using request - with requests module v6">
-      <created>1633796748085</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1633796748085</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Using request - with requests module v7">
-      <created>1633799330276</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1633799330276</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Using request - with requests module v8">
-      <created>1633802283990</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1633802283990</updated>
-    </task>
-    <task id="LOCAL-00019" summary="Using json v1">
-      <created>1633811462881</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1633811462881</updated>
-    </task>
-    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="1st try-out with dowloading from google drive" />
-    <MESSAGE value="2nd try-out with dowloading from google drive" />
-    <MESSAGE value="3rd try-out" />
-    <MESSAGE value="4th" />
-    <MESSAGE value="5th" />
-    <MESSAGE value="6th - files.download" />
-    <MESSAGE value="6th - files.download + google.colab" />
-    <MESSAGE value="Using request" />
-    <MESSAGE value="Using request - without googlecolab import" />
-    <MESSAGE value="Using request - with requests module" />
-    <MESSAGE value="Using request - with requests module v2" />
-    <MESSAGE value="Using request - with requests module v3" />
-    <MESSAGE value="Using request - with requests module v4" />
-    <MESSAGE value="Using request - with requests module v5" />
-    <MESSAGE value="Using request - with requests module v6" />
-    <MESSAGE value="Using request - with requests module v7" />
-    <MESSAGE value="Using request - with requests module v8" />
-    <MESSAGE value="Using json v1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Using json v1" />
   </component>
 </project>

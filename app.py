@@ -1,10 +1,6 @@
-# Red to orange status applicant nb. 105966
-# Orange to green status applicant: nb. 117298
-# Green status applicant nb. 117417
-
-# IMPORTS
 import os
 import pandas as pd
+import pytest
 import requests
 import streamlit as st
 import streamlit.components.v1 as components
@@ -12,24 +8,20 @@ import streamlit.components.v1 as components
 from back_end.prediction import *
 from matplotlib import pyplot as plt, patches
 
-
-
-# CONSTANTS
-PATH = 'https://github.com/Benoit-78/credit_loan_scoring_model'
-MODEL_PATH = PATH + '/back_end/fitted_xgb.json'
+LOCAL_PATH = 'C:\\Users\\benoi\\OneDrive\\Documents\\20.3 Informatique\\Data Science\\0_process\\P7 Modèle de scoring\\40 dossier_git'
+GITHUB_PATH = 'https://github.com/Benoit-78/credit_loan_scoring_model'
+PATH = LOCAL_PATH
+MODEL_PATH = model_path(PATH)
 
 st.set_page_config(layout='centered')
 
-# LOAD DATA AND MODEL
-train_df, test_df, orig_train_df = load_data(PATH)
+# DATA AND MODEL LOADING
+train_df = load_data(PATH, 'app_samp_train.csv')
+test_df = load_data(PATH, 'app_samp_test.csv')
+orig_train_df = load_data(PATH, 'orig_train_samp.csv')
 model = load_model(MODEL_PATH)
 
-# Also: save and load model config when saved as json file.
-
-
-# Get the most important features
 main_features_row = most_important_features_list(test_df, model, n_feat=6)
-
 
 
 # INPUTS
@@ -40,23 +32,17 @@ applicant_id = st.sidebar.selectbox(
     test_df.index)
 orig_row = test_df.loc[applicant_id]
 orig_row['ID'] = applicant_id
-# Cleaning the orig_row from parasite characters
+# Clean from parasite characters
 orig_row.rename(lambda x: x.replace('_', ' '), axis='index', inplace=True)
 row = orig_row
 
 
-
-# --------------------
 # SETTINGS
-# --------------------
 st.sidebar.markdown('''---''')
 st.sidebar.subheader("Settings")
-# Reset values
-#if st.sidebar.button('Update'):
-#    row = orig_row
 widgets = {}
 for i, feature_name in enumerate(main_features_row):
-    # Categorical variable
+    # For categorical variable
     if orig_encoded_feat(feature_name):
         # Label
         orig_col = orig_encoded_feat(feature_name)
@@ -70,18 +56,16 @@ for i, feature_name in enumerate(main_features_row):
             if option in app_option:
                 index = l
                 break
-        #st.write(' - '.join([label, option, str(index)]))
         widget_key = st.sidebar.selectbox(
             label=label,
             options=options,
-            index=index)#,
-            #on_change=refresh)
-        # Save the original feature
+            index=index)
+        # Save the chosen option
         if widget_key != 'Not available':
             widget_key = original_string(orig_col, widget_key)
             widget_key = orig_encoded_option(widget_key)
             widgets[label] = widget_key
-    # Boolean variable
+    # For boolean variable
     elif test_df[feature_name].nunique() == 2:
         if int(row[feature_name]) == 1:
             app_value = 1
@@ -91,7 +75,7 @@ for i, feature_name in enumerate(main_features_row):
             feature_name,
             (0, 1),
             index=app_value)
-    # Quantitative variable
+    # For quantitative variable
     else:
         min_value = int(min(test_df[feature_name]))
         max_value = int(max(test_df[feature_name]))
@@ -99,33 +83,26 @@ for i, feature_name in enumerate(main_features_row):
         widgets[main_features_row[i]] = st.sidebar.slider(feature_name.capitalize(), min_value, max_value, app_value)
 
 
-
-# --------------------
-# OUTPUTS
-# --------------------
-# Identify if the row is original or have been changed
+# Update the row
 new_row = row_from_widgets_dict(widgets.items(), row, test_df)
 if not new_row.equals(row):    
     row = new_row
 
 
-
+# INDICATORS
 col1, col2 = st.columns([1, 4])
-# First version of indicator and probability of reliability.
 with col1:
-    indic = decision_indicator(test_df, model)
+    indic = DecisionIndicator(test_df, model)
     st.pyplot(indic.display_circle(row.drop('ID')))
 with col2:
-    scale = liability_scale(test_df, model)
+    scale = LiabilityScale(test_df, model)
     st.pyplot(scale.display_scale(row.drop('ID')))
 
 
-
-# --------------------
 # APPLICANT POSITION
-# --------------------
 st.markdown('''---''')
 st.header("Applicant position")
+# First row
 col30, col31, col32 = st.columns(3)
 with col30:
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, main_features_row[0]))
@@ -133,6 +110,7 @@ with col31:
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, main_features_row[1]))
 with col32:
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, main_features_row[2]))
+# Second row
 col33, col34, col35 = st.columns(3)
 with col33:
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, main_features_row[3]))
@@ -142,10 +120,7 @@ with col35:
     st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, main_features_row[5]))
 
 
-
-# --------------------
 # OTHER CHARACTERISTICS
-# --------------------
 st.markdown('''---''')
 st.header("Other characteristics")
 orig_cols = []
