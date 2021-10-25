@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="af58a0ea-8145-4b2d-965a-7f78ab4d9854" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soutenance/P7_soutenance.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/soutenance/P7_soutenance.pptx" afterDir="false" />
-    </list>
+    <list default="true" id="af58a0ea-8145-4b2d-965a-7f78ab4d9854" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -79,7 +76,7 @@
       <workItem from="1634485944630" duration="306000" />
       <workItem from="1634648980173" duration="1325000" />
       <workItem from="1634853230281" duration="1439000" />
-      <workItem from="1635139767040" duration="977000" />
+      <workItem from="1635139767040" duration="1536000" />
     </task>
     <task id="LOCAL-00001" summary="Clean code (comments)">
       <created>1634649138389</created>
@@ -95,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635139993714</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="final commit with video">
+      <created>1635140767347</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1635140767347</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -106,6 +110,7 @@
     <MESSAGE value="Clean code (comments)" />
     <MESSAGE value="with pytest" />
     <MESSAGE value="final commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="final commit" />
+    <MESSAGE value="final commit with video" />
+    <option name="LAST_COMMIT_MESSAGE" value="final commit with video" />
   </component>
 </project>
