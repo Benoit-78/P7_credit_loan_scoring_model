@@ -3,7 +3,6 @@ import pandas as pd
 import pytest
 import requests
 import streamlit as st
-import streamlit.components.v1 as components
 
 from back_end.prediction import *
 from matplotlib import pyplot as plt, patches
@@ -105,19 +104,19 @@ st.header("Applicant position")
 # First row
 col30, col31, col32 = st.columns(3)
 with col30:
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, main_features_row[0]))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, row, main_features_row[0]))
 with col31:    
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, main_features_row[1]))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, row, main_features_row[1]))
 with col32:
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, main_features_row[2]))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, row, main_features_row[2]))
 # Second row
 col33, col34, col35 = st.columns(3)
 with col33:
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, main_features_row[3]))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, row, main_features_row[3]))
 with col34:
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, main_features_row[4]))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, row, main_features_row[4]))
 with col35:
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, main_features_row[5]))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, row, main_features_row[5]))
 
 
 # OTHER CHARACTERISTICS
@@ -144,4 +143,4 @@ col40, col41, col42 = st.columns([1, 3, 1])
 with col41:
     feature = st.selectbox(label='',
                            options=orig_cols)
-    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, model, row, feature))
+    st.pyplot(plot_customer_position(train_df, test_df, orig_train_df, row, feature))
