@@ -87,7 +87,7 @@ def model_path(path):
     return model_path
 
 
-def load_the_model(model_path):
+def load_my_model(model_path):
     """Load pickled model"""
     model = xgb.XGBClassifier()
     #open(model_path, 'wb').write(myfile_content)
