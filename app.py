@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt, patches
 
 LOCAL_PATH = 'C:\\Users\\benoi\\OneDrive\\Documents\\20.3 Informatique\\Data Science\\0_process\\P7 Modèle de scoring\\40 dossier_git'
 GITHUB_PATH = 'https://github.com/Benoit-78/credit_loan_scoring_model'
-PATH = LOCAL_PATH
+PATH = GITHUB_PATH
 MODEL_PATH = model_path(PATH)
 
 st.set_page_config(layout='centered')
