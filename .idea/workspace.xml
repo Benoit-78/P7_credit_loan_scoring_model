@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2585bb80-b0ed-4e8b-ae5b-c766f9842c20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back_end/P7_02_classification.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/back_end/P7_02_classification.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back_end/prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/back_end/prediction.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +37,7 @@
       <updated>1635337475406</updated>
       <workItem from="1635337477352" duration="1656000" />
       <workItem from="1635345010643" duration="4865000" />
-      <workItem from="1635355126853" duration="2263000" />
+      <workItem from="1635355126853" duration="3970000" />
     </task>
     <task id="LOCAL-00001" summary="with locally pickled model">
       <created>1635356553582</created>
@@ -52,7 +53,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635357050385</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="with short requirements.txt">
+      <created>1635357416783</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1635357416783</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -61,6 +69,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="with locally pickled model" />
     <MESSAGE value="with locally pickled model. with requirements.txt installed through CLI" />
-    <option name="LAST_COMMIT_MESSAGE" value="with locally pickled model. with requirements.txt installed through CLI" />
+    <MESSAGE value="with short requirements.txt" />
+    <option name="LAST_COMMIT_MESSAGE" value="with short requirements.txt" />
   </component>
 </project>
