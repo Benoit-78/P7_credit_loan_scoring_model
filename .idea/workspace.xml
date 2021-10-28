@@ -4,6 +4,7 @@
     <list default="true" id="2585bb80-b0ed-4e8b-ae5b-c766f9842c20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back_end/P7_02_classification.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/back_end/P7_02_classification.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +39,10 @@
       <workItem from="1635355126853" duration="4061000" />
       <workItem from="1635360230143" duration="216000" />
       <workItem from="1635360946607" duration="782000" />
-      <workItem from="1635362809545" duration="309000" />
+      <workItem from="1635362809545" duration="626000" />
+      <workItem from="1635364216266" duration="952000" />
+      <workItem from="1635365813293" duration="618000" />
+      <workItem from="1635410431649" duration="3856000" />
     </task>
     <task id="LOCAL-00001" summary="with locally pickled model">
       <created>1635356553582</created>
@@ -82,7 +86,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635362828862</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="with st.write test">
+      <created>1635363138716</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1635363138716</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -95,6 +106,7 @@
     <MESSAGE value="different names for loading model functions" />
     <MESSAGE value="different names for loading model functions v2" />
     <MESSAGE value="load_my_model" />
-    <option name="LAST_COMMIT_MESSAGE" value="load_my_model" />
+    <MESSAGE value="with st.write test" />
+    <option name="LAST_COMMIT_MESSAGE" value="with st.write test" />
   </component>
 </project>
