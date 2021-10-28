@@ -83,7 +83,7 @@ def model_path(path):
         model_path = path + '\\back_end\\'
     else:
         model_path = path + '/tree/main/back_end/'
-    model_path += 'fitted_xgb.pkl'
+    model_path += 'fitted_xgb.json'
     return model_path
 
 

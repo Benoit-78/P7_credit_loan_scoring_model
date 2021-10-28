@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2585bb80-b0ed-4e8b-ae5b-c766f9842c20" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/back_end/fitted_xgb.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back_end/P7_02_classification.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/back_end/P7_02_classification.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back_end/prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/back_end/prediction.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,11 +16,15 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="205bcBUAWKuLyDiPl3VMU6FvxEH" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -42,7 +47,7 @@
       <workItem from="1635362809545" duration="626000" />
       <workItem from="1635364216266" duration="952000" />
       <workItem from="1635365813293" duration="618000" />
-      <workItem from="1635410431649" duration="3856000" />
+      <workItem from="1635410431649" duration="3980000" />
     </task>
     <task id="LOCAL-00001" summary="with locally pickled model">
       <created>1635356553582</created>
@@ -93,13 +98,21 @@
       <option name="project" value="LOCAL" />
       <updated>1635363138716</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="2nd try-out with .json model">
+      <created>1635417878033</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1635417878033</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="with locally pickled model" />
     <MESSAGE value="with locally pickled model. with requirements.txt installed through CLI" />
     <MESSAGE value="with short requirements.txt" />
@@ -107,6 +120,7 @@
     <MESSAGE value="different names for loading model functions v2" />
     <MESSAGE value="load_my_model" />
     <MESSAGE value="with st.write test" />
-    <option name="LAST_COMMIT_MESSAGE" value="with st.write test" />
+    <MESSAGE value="2nd try-out with .json model" />
+    <option name="LAST_COMMIT_MESSAGE" value="2nd try-out with .json model" />
   </component>
 </project>

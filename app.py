@@ -10,7 +10,6 @@ from matplotlib import pyplot as plt, patches
 LOCAL_PATH = 'C:\\Users\\benoi\\OneDrive\\Documents\\20.3 Informatique\\Data Science\\0_process\\P7 Modèle de scoring\\40 dossier_git'
 GITHUB_PATH = 'https://github.com/Benoit-78/credit_loan_scoring_model'
 PATH = GITHUB_PATH
-MODEL_PATH = model_path(PATH)
 
 st.set_page_config(layout='centered')
 
@@ -18,7 +17,8 @@ st.set_page_config(layout='centered')
 train_df = load_data(PATH, 'app_samp_train.csv')
 test_df = load_data(PATH, 'app_samp_test.csv')
 orig_train_df = load_data(PATH, 'orig_train_samp.csv')
-model = load_my_model('fitted_xgb.json')
+MODEL_PATH = model_path(PATH)
+model = load_my_model(MODEL_PATH)
 
 main_features_row = most_important_features_list(test_df, model, n_feat=6)
 
