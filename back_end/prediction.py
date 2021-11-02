@@ -77,7 +77,7 @@ def model_path(path):
     if is_local(path):
         model_path = path + '\\'
     else:
-        model_path = path + '/tree/main/'
+        model_path = path + '/'
     model_path += 'fitted_gbstg.pkl'
     return model_path
 
