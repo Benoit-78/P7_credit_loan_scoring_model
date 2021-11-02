@@ -12,9 +12,8 @@ st.set_page_config(layout='centered')
 train_df = load_data(PATH, 'app_samp_train.csv')
 test_df = load_data(PATH, 'app_samp_test.csv')
 orig_train_df = load_data(PATH, 'orig_train_samp.csv')
-#model = load_my_model(MODEL_PATH)
-#MODEL_PATH = model_path(PATH)
-MODEL_PATH = PATH + '/back_end/fitted_gbstg.pkl'
+MODEL_PATH = model_path(PATH)
+model = load_my_model(MODEL_PATH)
 model = open(MODEL_PATH, 'rb')
 model = pickle.load(model)
 
