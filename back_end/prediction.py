@@ -10,19 +10,14 @@
 
 # IMPORTS
 import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import pickle
-import pytest
-import requests
 import seaborn as sns
 import streamlit as st
-import urllib.request
-import xgboost as xgb
+#import xgboost as xgb
+from sklearn.ensemble import GradientBoostingClassifier
 
 from matplotlib import collections as mc
-from xgboost import plot_importance
 from matplotlib import pyplot as plt, patches
 
 
@@ -83,18 +78,18 @@ def model_path(path):
         model_path = path + '\\back_end\\'
     else:
         model_path = path + '/tree/main/back_end/'
-    model_path += 'fitted_xgb.json'
+    model_path += 'fitted_gbstg.pkl'
     return model_path
 
 
 def load_my_model(model_path):
     """Load pickled model"""
-    model = xgb.XGBClassifier()
+    model = xgb.XGBoostClassifier()
     #open(model_path, 'wb').write(myfile_content)
     model.load_model(model_path)
     #model = pickle.load(open(model_path, 'rb'))
     #model = pickle.load(urllib.request.urlopen(model_path))
-    return model
+    return lo
 
 
 def readable_string(my_string):

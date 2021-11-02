@@ -1,11 +1,6 @@
-import os
-import pandas as pd
-import pytest
-import requests
-import streamlit as st
+import pickle
 
 from back_end.prediction import *
-from matplotlib import pyplot as plt, patches
 
 LOCAL_PATH = 'C:\\Users\\benoi\\OneDrive\\Documents\\20.3 Informatique\\Data Science\\0_process\\P7 Modèle de scoring\\40 dossier_git'
 GITHUB_PATH = 'https://github.com/Benoit-78/credit_loan_scoring_model'
@@ -18,7 +13,8 @@ train_df = load_data(PATH, 'app_samp_train.csv')
 test_df = load_data(PATH, 'app_samp_test.csv')
 orig_train_df = load_data(PATH, 'orig_train_samp.csv')
 MODEL_PATH = model_path(PATH)
-model = load_my_model(MODEL_PATH)
+#model = load_my_model(MODEL_PATH)
+model = pickle.load(open(MODEL_PATH, 'rb'))
 
 main_features_row = most_important_features_list(test_df, model, n_feat=6)
 
