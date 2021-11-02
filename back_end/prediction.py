@@ -338,9 +338,10 @@ def plot_customer_position(train_df, test_df, orig_train_df, row, feature_name):
 def plot_cust_pos_bool_feat(train_df, feat, row):
     """Plot the position of the applicant for a boolean feature."""
     value = row[feat]
-    # Get the distribution with/without the feature, granted/refused loan.
+    # Get the distribution granted/refused loan.
     without_df = train_df[train_df[feat] == 0]
     with_df = train_df[train_df[feat] == 1]
+    # Get the distribution with/without the feature
     without_granted = without_df[without_df['TARGET'] == 1].shape[0]
     with_granted = with_df[with_df['TARGET'] == 1].shape[0]
     if value == 0:
