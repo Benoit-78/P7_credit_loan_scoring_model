@@ -74,9 +74,9 @@ def load_data(path, file_name):
 
 def model_path(path):
     if is_local(path):
-        model_path = path + '\\'
+        model_path = path + '\\back_end\\'
     else:
-        model_path = path + '/'
+        model_path = path + '/tree/main/back_end/'
     model_path += 'fitted_gbstg.pkl'
     return model_path
 
