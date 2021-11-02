@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2585bb80-b0ed-4e8b-ae5b-c766f9842c20" name="Changes" comment="pkl on main">
-      <change afterPath="$PROJECT_DIR$/fitted_gbstg.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+    <list default="true" id="2585bb80-b0ed-4e8b-ae5b-c766f9842c20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back_end/fitted_gbstg.pkl" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,6 +113,7 @@
       <workItem from="1635850788963" duration="3000" />
       <workItem from="1635852023145" duration="602000" />
       <workItem from="1635859060075" duration="272000" />
+      <workItem from="1635859358955" duration="522000" />
     </task>
     <task id="LOCAL-00001" summary="with locally pickled model">
       <created>1635356553582</created>
@@ -194,7 +192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635852303967</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="pkl on main">
+      <created>1635859392616</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1635859392616</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
