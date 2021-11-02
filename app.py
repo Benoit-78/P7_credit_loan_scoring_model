@@ -12,10 +12,11 @@ st.set_page_config(layout='centered')
 train_df = load_data(PATH, 'app_samp_train.csv')
 test_df = load_data(PATH, 'app_samp_test.csv')
 orig_train_df = load_data(PATH, 'orig_train_samp.csv')
-MODEL_PATH = model_path(PATH)
+#MODEL_PATH = model_path(PATH)
+MODEL_PATH = PATH + '/fitted_gbstg.pkl'
 #model = load_my_model(MODEL_PATH)
-model =  open(MODEL_PATH, 'rb')
-model = pickle.loads(model)
+model = open(MODEL_PATH, 'rb')
+model = pickle.load(model)
 
 main_features_row = most_important_features_list(test_df, model, n_feat=6)
 
