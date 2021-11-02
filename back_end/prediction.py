@@ -57,7 +57,6 @@ def set_index_(df):
 
 
 def load_data(path, file_name):
-    """Load dataframes."""
     if is_local(path):
         df = pd.read_csv(path + '\\data\\' + file_name)
     else:
