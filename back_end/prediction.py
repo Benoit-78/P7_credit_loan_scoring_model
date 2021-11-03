@@ -77,7 +77,7 @@ def model_path(path):
         model_path = path + '\\back_end\\'
     else:
         model_path = path + '/tree/main/back_end/'
-    model_path += 'fitted_gbstg.pkl'
+    model_path += 'fitted_gbstg'
     return model_path
 
 
@@ -86,9 +86,8 @@ def load_my_model(model_path):
     model = xgb.XGBoostClassifier()
     #open(model_path, 'wb').write(myfile_content)
     model.load_model(model_path)
-    #model = pickle.load(open(model_path, 'rb'))
     #model = pickle.load(urllib.request.urlopen(model_path))
-    return lo
+    return model
 
 
 def readable_string(my_string):

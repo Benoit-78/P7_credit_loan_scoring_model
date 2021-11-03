@@ -15,9 +15,10 @@ test_df = load_data(PATH, 'app_samp_test.csv')
 orig_train_df = load_data(PATH, 'orig_train_samp.csv')
 MODEL_PATH = model_path(PATH)
 #model = load_my_model(MODEL_PATH)
-download = requests.get(MODEL_PATH).content
-#model = open(MODEL_PATH, 'rb')
-model = pickle.load(download)
+#download = requests.get(MODEL_PATH).content
+model = open(MODEL_PATH, 'rb')
+model = pickle.load(model, encoding='latin1')
+
 
 main_features_row = most_important_features_list(test_df, model, n_feat=6)
 
