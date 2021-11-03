@@ -13,11 +13,11 @@ st.set_page_config(layout='centered')
 train_df = load_data(PATH, 'app_samp_train.csv')
 test_df = load_data(PATH, 'app_samp_test.csv')
 orig_train_df = load_data(PATH, 'orig_train_samp.csv')
-MODEL_PATH = model_path(PATH)
+#MODEL_PATH = model_path(PATH)
 #model = load_my_model(MODEL_PATH)
 #download = requests.get(MODEL_PATH).content
-model = open(MODEL_PATH, 'rb')
-model = pickle.load(model, encoding='latin1')
+with open('https://github.com/Benoit-78/credit_loan_scoring_model/blob/main/back_end/fitted_gbstg.pkl', 'rb') as f:
+    model = pickle.load(f, encoding='latin1')
 
 
 main_features_row = most_important_features_list(test_df, model, n_feat=6)
