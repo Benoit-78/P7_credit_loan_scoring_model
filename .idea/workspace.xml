@@ -4,7 +4,7 @@
     <list default="true" id="2585bb80-b0ed-4e8b-ae5b-c766f9842c20" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back_end/prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/back_end/prediction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back_end/fitted_gbstg.pkl" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +122,7 @@
       <workItem from="1635929677465" duration="2013000" />
       <workItem from="1635931720633" duration="8000" />
       <workItem from="1635931769016" duration="41000" />
-      <workItem from="1635931906299" duration="54000" />
+      <workItem from="1635931906299" duration="162000" />
     </task>
     <task id="LOCAL-00001" summary="with locally pickled model">
       <created>1635356553582</created>
@@ -306,7 +306,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635931537878</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="without .pkl extension">
+      <created>1635931978187</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1635931978187</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -320,7 +327,6 @@
       <path value="$PROJECT_DIR$/xgboost/dmlc-core" />
       <path value="$PROJECT_DIR$/xgboost/gputreeshap" />
     </ignored-roots>
-    <MESSAGE value="with locally pickled model. with requirements.txt installed through CLI" />
     <MESSAGE value="with short requirements.txt" />
     <MESSAGE value="different names for loading model functions" />
     <MESSAGE value="different names for loading model functions v2" />
@@ -345,7 +351,8 @@
     <MESSAGE value="with requests" />
     <MESSAGE value="back to xgb - test" />
     <MESSAGE value="back to xgb - test v2" />
-    <option name="LAST_COMMIT_MESSAGE" value="back to xgb - test v2" />
+    <MESSAGE value="without .pkl extension" />
+    <option name="LAST_COMMIT_MESSAGE" value="without .pkl extension" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/app_py$app.coverage" NAME="app Coverage Results" MODIFIED="1635612103887" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
