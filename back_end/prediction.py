@@ -76,8 +76,8 @@ def model_path(path):
     if is_local(path):
         model_path = path + '\\back_end\\'
     else:
-        model_path = path + '/tree/main/back_end/'
-    model_path += 'fitted_gbstg'
+        model_path = path + '/blob/main/back_end/'
+    model_path += 'fitted_gbstg.pkl'
     return model_path
 
 
