@@ -16,7 +16,7 @@ orig_train_df = load_data(PATH, 'orig_train_samp.csv')
 #MODEL_PATH = model_path(PATH)
 #model = load_my_model(MODEL_PATH)
 #download = requests.get(MODEL_PATH).content
-with open('https://github.com/Benoit-78/credit_loan_scoring_model/blob/main/back_end/fitted_gbstg.pkl', 'rb') as f:
+with open('credit_loan_scoring_model/back_end/fitted_gbstg.pkl', 'rb') as f:
     model = pickle.load(f, encoding='latin1')
 
 
