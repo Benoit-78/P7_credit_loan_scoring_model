@@ -16,7 +16,7 @@ orig_train_df = load_data(PATH, 'orig_train_samp.csv')
 #MODEL_PATH = model_path(PATH)
 #model = load_my_model(MODEL_PATH)
 #download = requests.get(MODEL_PATH).content
-with open('main/back_end/fitted_gbstg.pkl', 'rb') as f:
+with open('tree/main/back_end/fitted_gbstg.pkl', 'rb') as f:
     model = pickle.load(f, encoding='latin1')
 
 
