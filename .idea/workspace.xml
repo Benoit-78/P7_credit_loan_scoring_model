@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2585bb80-b0ed-4e8b-ae5b-c766f9842c20" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -134,7 +135,8 @@
       <workItem from="1636021759988" duration="2729000" />
       <workItem from="1636030413127" duration="2265000" />
       <workItem from="1636035301299" duration="1156000" />
-      <workItem from="1636036595088" duration="2009000" />
+      <workItem from="1636036595088" duration="2213000" />
+      <workItem from="1636038982769" duration="26000" />
     </task>
     <task id="LOCAL-00001" summary="with locally pickled model">
       <created>1635356553582</created>
@@ -423,7 +425,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636038592060</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="functional v6">
+      <created>1636038637110</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1636038637110</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -437,7 +446,6 @@
       <path value="$PROJECT_DIR$/xgboost/dmlc-core" />
       <path value="$PROJECT_DIR$/xgboost/gputreeshap" />
     </ignored-roots>
-    <MESSAGE value="pkl on main v5" />
     <MESSAGE value="with sklearn" />
     <MESSAGE value="without tree/main" />
     <MESSAGE value="with tree/main" />
@@ -462,7 +470,8 @@
     <MESSAGE value="functional v3" />
     <MESSAGE value="functional v4" />
     <MESSAGE value="functional v5" />
-    <option name="LAST_COMMIT_MESSAGE" value="functional v5" />
+    <MESSAGE value="functional v6" />
+    <option name="LAST_COMMIT_MESSAGE" value="functional v6" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/app_py$app.coverage" NAME="app Coverage Results" MODIFIED="1635612103887" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
