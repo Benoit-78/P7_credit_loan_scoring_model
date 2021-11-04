@@ -134,7 +134,7 @@
       <workItem from="1636021759988" duration="2729000" />
       <workItem from="1636030413127" duration="2265000" />
       <workItem from="1636035301299" duration="1156000" />
-      <workItem from="1636036595088" duration="1871000" />
+      <workItem from="1636036595088" duration="1902000" />
     </task>
     <task id="LOCAL-00001" summary="with locally pickled model">
       <created>1635356553582</created>
@@ -402,7 +402,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636038471384</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="functional v3">
+      <created>1636038497146</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1636038497146</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -416,7 +423,6 @@
       <path value="$PROJECT_DIR$/xgboost/dmlc-core" />
       <path value="$PROJECT_DIR$/xgboost/gputreeshap" />
     </ignored-roots>
-    <MESSAGE value="pkl on main v2" />
     <MESSAGE value="pkl on main v3" />
     <MESSAGE value="pkl on main v4" />
     <MESSAGE value="pkl on main v5" />
@@ -441,7 +447,8 @@
     <MESSAGE value="partial path with python 3.9 specified v1" />
     <MESSAGE value="functional" />
     <MESSAGE value="functional v2" />
-    <option name="LAST_COMMIT_MESSAGE" value="functional v2" />
+    <MESSAGE value="functional v3" />
+    <option name="LAST_COMMIT_MESSAGE" value="functional v3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/app_py$app.coverage" NAME="app Coverage Results" MODIFIED="1635612103887" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
