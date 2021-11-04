@@ -84,9 +84,7 @@ def model_path(path):
 def load_my_model(model_path):
     """Load pickled model"""
     model = xgb.XGBoostClassifier()
-    #open(model_path, 'wb').write(myfile_content)
     model.load_model(model_path)
-    #model = pickle.load(urllib.request.urlopen(model_path))
     return model
 
 
@@ -169,21 +167,28 @@ def sets_difference(df, row):
 
 
 def row_from_widgets_dict(widgets_dict, orig_row, encoded_df):
-    """Make a row out of the widgets results.
-    Must take into account the updates."""
     new_row = orig_row.copy()
-    for key, value in widgets_dict:
+    for widget_key, widget_value in widgets_dict:
         # Qualitative values
-        if key in CAT_COLS:
-            option_cols = encoded_options(encoded_df, key+value)
+        if widget_key in CAT_COLS:
+            option_cols = encoded_options(encoded_df, widget_key + widget_value)
             # Reset the other options to 0
             for option_col in option_cols:
                 new_row[option_col] = 0
             # Set the new option chosen to 1
-            new_row[key+value] = 1
+            new_row[widget_key + widget_value] = 1
         # Quantitative and boolean values
         else:
-            new_row[key] = value
+            # particular cases
+            if 'prev' in widget_key:
+                feature_1 = widget_key.split('prev')[0][:-1]
+                feature = feature_1.upper() + ' prev'
+            else:
+                feature = widget_key.upper()
+            min_value = min(encoded_df[feature])
+            max_value = max(encoded_df[feature])
+            app_value = (max_value - min_value) * widget_value/100 + min_value
+            new_row[widget_key] = app_value
     return new_row
 
 
@@ -203,6 +208,11 @@ def most_important_features_list(x, model, n_feat=6):
     features = most_important_features_table(x, model, n_feat)
     features = list(features.index)
     return features
+
+
+def minimum_values(df, feature):
+    value = min(feature[feature])
+    value = int(value)
 
 
 # GETTING APPLICANT STATUS
@@ -374,22 +384,22 @@ def plot_cust_pos_quant_feat(train_df, feature, row):
     fig.suptitle('Repartition of successful applicants')
     # Boxplot
     sns.boxplot(distr[feature],
-                color='green',
+                color='gray',
                 boxprops=dict(edgecolor='k',
                               alpha=0.5),
                 ax=ax_box)
     ax_box.set(xlabel='')
     # Plot applicant position
     ax_dist.axvline(x=app_value,
-                    c='k',
+                    c='b',
                     linestyle='--',
                     label='Selected applicant',
-                    linewidth=1)
+                    linewidth=3)
     ax_dist.legend(loc='best')
     # Show distribution
     sns.kdeplot(data=distr,
                 x=feature,
-                color='green',
+                color='gray',
                 alpha=0.5,
                 bw_adjust=.3,
                 fill=True,

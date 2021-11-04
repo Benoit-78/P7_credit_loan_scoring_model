@@ -1,5 +1,4 @@
 import pickle
-import requests
 
 from back_end.prediction import *
 
@@ -13,15 +12,11 @@ st.set_page_config(layout='centered')
 train_df = load_data(PATH, 'app_samp_train.csv')
 test_df = load_data(PATH, 'app_samp_test.csv')
 orig_train_df = load_data(PATH, 'orig_train_samp.csv')
-#MODEL_PATH = model_path(PATH)
-#model = load_my_model(MODEL_PATH)
-#download = requests.get(MODEL_PATH).content
-with open('back_end/fitted_gbstg.pkl', 'rb') as f:
+with open(LOCAL_PATH + '/back_end/fitted_gbstg.pkl', 'rb') as f:
     model = pickle.load(f, encoding='latin1')
 
 
 main_features_row = most_important_features_list(test_df, model, n_feat=6)
-
 
 # INPUTS
 # Choose the applicant
@@ -41,7 +36,7 @@ st.sidebar.markdown('''---''')
 st.sidebar.subheader("Settings")
 widgets = {}
 for i, feature_name in enumerate(main_features_row):
-    # For categorical variable
+    # For a categorical variable
     if orig_encoded_feat(feature_name):
         # Label
         orig_col = orig_encoded_feat(feature_name)
@@ -64,29 +59,27 @@ for i, feature_name in enumerate(main_features_row):
             widget_key = original_string(orig_col, widget_key)
             widget_key = orig_encoded_option(widget_key)
             widgets[label] = widget_key
-    # For boolean variable
+    # For a boolean variable
     elif test_df[feature_name].nunique() == 2:
         if int(row[feature_name]) == 1:
             app_value = 1
         else:
             app_value = 0
-        widgets[main_features_row[i]] = st.sidebar.radio(
-            feature_name,
-            (0, 1),
-            index=app_value)
-    # For quantitative variable
+        widgets[main_features_row[i]] = st.sidebar.radio(feature_name, (0, 1), index=app_value)
+    # For a quantitative variable
     else:
-        min_value = int(min(test_df[feature_name]))
-        max_value = int(max(test_df[feature_name]))
-        app_value = int(test_df[feature_name].loc[applicant_id])
-        widgets[main_features_row[i]] = st.sidebar.slider(feature_name.capitalize(), min_value, max_value, app_value)
+        min_value = min(test_df[feature_name])
+        max_value = max(test_df[feature_name])
+        app_value = test_df[feature_name].loc[applicant_id]
+        percent_value = (app_value - min_value) / (max_value - min_value) * 100
+        percent_value = int(percent_value)
+        widgets[main_features_row[i]] = st.sidebar.slider(feature_name.capitalize(), 0, 100, percent_value)
 
 
 # Update the row
 new_row = row_from_widgets_dict(widgets.items(), row, test_df)
-if not new_row.equals(row):    
+if not new_row.equals(row):
     row = new_row
-
 
 # INDICATORS
 col1, col2 = st.columns([1, 4])
