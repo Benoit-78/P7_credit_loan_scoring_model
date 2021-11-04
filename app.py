@@ -12,7 +12,7 @@ st.set_page_config(layout='centered')
 train_df = load_data(PATH, 'app_samp_train.csv')
 test_df = load_data(PATH, 'app_samp_test.csv')
 orig_train_df = load_data(PATH, 'orig_train_samp.csv')
-with open('/back_end/fitted_gbstg.pkl', 'rb') as f:
+with open('tree/main/back_end/fitted_gbstg.pkl', 'rb') as f:
     model = pickle.load(f, encoding='latin1')
 
 
