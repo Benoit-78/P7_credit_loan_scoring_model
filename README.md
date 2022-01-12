@@ -13,7 +13,7 @@ Here are the first steps:
 Enjoy your app!
 
 
-Scripts
+# Scripts
 1) prediction.py
  Intermediary script between the dashboard and the fitted algorithm:
  - as inputs, he receives a row of features corresponding to the choosen
