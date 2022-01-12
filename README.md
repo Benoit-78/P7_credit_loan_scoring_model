@@ -14,8 +14,7 @@ Enjoy your app!
 
 
 ## Scripts
-1) prediction.py
- Intermediary script between the dashboard and the fitted algorithm:
+1) prediction.py: intermediary script between the dashboard and the fitted algorithm:
  - as inputs, he receives a row of features corresponding to the choosen
    candidate.
  - as outputs, he returns the following elements to the dashboard:
