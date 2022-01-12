@@ -12,4 +12,16 @@ Here are the first steps:
 
 Enjoy your app!
 
+
+Scripts
+1) prediction.py
+ Intermediary script between the dashboard and the fitted algorithm:
+ - as inputs, he receives a row of features corresponding to the choosen
+   candidate.
+ - as outputs, he returns the following elements to the dashboard:
+     * a judgement,
+     * a probablity,
+     * a plot representing the position of the candidate in the train set.
+
+
 I will be pleased to provide support: delormebenoit211@gmail.com.
